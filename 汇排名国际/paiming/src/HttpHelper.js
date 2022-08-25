@@ -88,7 +88,6 @@ export class HttpHelper {
     }
 
     static Getimage(module, completecallback) {
-
         wx.chooseImage({
             count: 1, // 默认9
             sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
@@ -96,13 +95,9 @@ export class HttpHelper {
             success: function(res) {
                 var localIds = res.localIds;
                 // alert(JSON.stringify(res))
-
                 // syncUpload(localIds,0)
-
                 // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
                 //  imglist.value.push(localIds)
-
-
                 wx.getLocalImgData({
                     localId: localIds.toString(),
                     success: function(res) {

@@ -1,5 +1,4 @@
 <template>
-  <!-- 国际版 -->
   <div v-if="page.Res != null && page.Inst != null">
     <div class="">
       <div class="flex-row flex-column">
@@ -19,14 +18,14 @@
       <div style="margin-bottom: 5px; font-size: 20px">
         {{ list.version_name }}
       </div>
-      <div style="">{{ list.tran_version_name }}</div>
+      <div>{{ list.tran_version_name }}</div>
     </div>
     <div class="h-22"></div>
     <div class="pobottom">
-      <div class="center f-11 c-7 margin-top-14">
+      <div class="center f-11 c-7" @click="toLink(page.Inst.banquan_link)">
         {{ page.Inst.banquan2 }}
       </div>
-      <div class="center f-11 margin-top-7" style="color: #048693">
+      <div class="center f-11 margin-top-5" style="color: #048693" @click="toLink(page.Inst.icp_link)">
         {{ page.Inst.banquan }}
       </div>
     </div>
@@ -48,12 +47,16 @@ HttpHelper.Post("inst/versionlist", {}).then((verion) => {
   verionlist.value = verion;
 });
 let toVersion = (vale) => {
-  if (vale.back == "") {
+  if (!vale.back) {
     Toast.fail("暂无该版本，期待下次更新");
     return;
   }
   window.location.href = vale.back;
 };
+let toLink = (val) =>{
+  if(!val) return;
+  window.location.href = val;
+}
 </script>
 
 <style scoped>
