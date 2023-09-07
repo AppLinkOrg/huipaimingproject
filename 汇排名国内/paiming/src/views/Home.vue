@@ -101,7 +101,7 @@ let switchgj = () =>{
           @update:model-value="onClickButton"
           id="searchid"
           @search="onClickButton"
-          placeholder="请输入大学中文或英文名称"
+          :placeholder="page.Inst.searchTips"
         >
           <template #action>
             <div class="langzy">
