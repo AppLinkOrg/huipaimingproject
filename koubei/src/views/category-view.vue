@@ -24,23 +24,23 @@ const gotoKoubei=()=>{
     <div v-if="resource != null&&inst != null">
       <div class="flex-row">
         <div class="flex-1"></div>
-        <img class="logo margin-49" :src="uploadpath + 'resource/' + resource.logo" />
+        <img class="logo margin-top-49" :src="uploadpath + 'resource/' + resource.logo" />
         <div class="flex-1"></div>
       </div>
       <div class="flex-row">
         <div class="flex-1"></div>
         <div>
-          <div class="card-section margin-49">
+          <div class="card-section margin-top-49">
             <div class="fw-500 f-29 fc-white">国内版</div>
-            <div class="fw-400 f-22 fc-white margin-14">Domestic Version</div>
+            <div class="fw-400 f-22 fc-white margin-top-14">Domestic Version</div>
           </div>
-          <div class="card-section margin-22">
+          <div class="card-section margin-top-22">
             <div class="fw-500 f-29 fc-white">国际版</div>
-            <div class="fw-400 f-22 fc-white margin-14">International Version</div>
+            <div class="fw-400 f-22 fc-white margin-top-14">International Version</div>
           </div>
-          <div class="card-section margin-22" @click="gotoKoubei()">
+          <div class="card-section margin-top-22" @click="gotoKoubei()">
             <div class="fw-500 f-29 fc-white">口碑版</div>
-            <div class="fw-400 f-22 fc-white margin-14">Word-of-mouth Version</div>
+            <div class="fw-400 f-22 fc-white margin-top-14">Word-of-mouth Version</div>
           </div>
         </div>
         <div class="flex-1"></div>
@@ -48,14 +48,14 @@ const gotoKoubei=()=>{
       <div class="flex-row">
         <div class="flex-1"></div>
         <div>
-            <div class="margin-49 "><span class="fc-gray f-12">{{ inst.banquan2 }}</span></div>
+            <div class="margin-top-49 "><span class="fc-gray f-12">{{ inst.banquan2 }}</span></div>
         </div>
         <div class="flex-1"></div>
       </div>
       <div class="flex-row">
         <div class="flex-1"></div>
         <div>
-            <div><a :href="inst.icp_link" target="_blank" class="margin-11 fc-primary f-12">{{ inst.banquan }}</a></div>
+            <div><a :href="inst.icp_link" target="_blank" class="margin-top-11 fc-primary f-12">{{ inst.banquan }}</a></div>
         </div>
         <div class="flex-1"></div>
       </div>

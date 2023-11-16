@@ -1,9 +1,8 @@
 <template>
-    <div class="line"></div>
+    <div class="line wp-100"></div>
 </template>
 <style scoped>
 .line{
-    width: 100%;
     height: 1px;
     background: #EEEEEE;
 }

@@ -48,17 +48,23 @@
 .w-100{
   width: 100vw;
 }
-.margin-49 {
+.margin-top-49 {
   margin-top: 49px;
 }
-.margin-14 {
+.margin-top-14 {
   margin-top: 14px;
 }
-.margin-22 {
+.margin-top-22 {
   margin-top: 22px;
 }
-.margin-11 {
+.margin-top-11 {
   margin-top: 11px;
+}
+.margin-bottom-18 {
+  margin-bottom: 18px;
+}
+.margin-left-5{
+  margin-left: 5px;
 }
 .bg{
   background-image: url(http://applinkupload.oss-cn-shenzhen.aliyuncs.com/alucard263096/huipaimingkoube/resource/bfa7c04cd23f886ce0bdd4030fd37e9e_231116112737_1837152972.png);
@@ -67,7 +73,38 @@
   width:350px;
 }
 .input {
-  width: 100%;
   border: none; /* 去掉边框 */
   outline: none; /* 去掉轮廓 */
+}
+.wp-100{
+  width: 100%;
+}
+
+  .overlay-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  
+.bg-white {
+  background-color: white;
+}
+.bg-gray {
+  background-color: #999999;
+}
+.bg-black{
+  background-color: #333333;
+}
+.bg-primary{
+  background-color:#048695;
+}
+
+.bottom-block{
+  width:100vw;
+  position: fixed;
+  left:0;
+  bottom:0px;
+  margin-bottom: 14px;
 }

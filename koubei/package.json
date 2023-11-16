@@ -16,6 +16,7 @@
     "postcss": "^8.4.31",
     "postcss-cli": "^10.1.0",
     "postcss-px-to-viewport": "^1.1.1",
+    "vant": "^4.7.3",
     "vue": "^3.3.4",
     "vue-axios": "^3.5.2",
     "vue-router": "^4.2.5"
