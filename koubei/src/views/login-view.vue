@@ -5,6 +5,8 @@ import { ref, watch } from 'vue'
 import Config from '../httphelper/Config'
 import { HttpHelper } from '../httphelper/HttpHelper'
 import Line from '../components/line.vue'
+const route = useRoute();
+const router = useRouter();
 const uploadpath = Config.UploadPath
 const resource = ref(null)
 const mobile = ref("")
@@ -19,6 +21,13 @@ const sendverifycode=()=>{
     loading.value=false;
   },1000);
 };
+const login=()=>{
+  loading.value=true;
+  setTimeout(()=>{
+    loading.value=false;
+    router.push('/home');
+  },1000);
+}
 </script>
 <template>
   <div>
@@ -49,7 +58,7 @@ const sendverifycode=()=>{
             </div>
             <Line></Line>
             <div class="margin-top-49" ></div>
-            <van-button type="primary" block round :color="Config.PrimaryColor">登录</van-button>
+            <van-button type="primary" block round :color="Config.PrimaryColor" @click="login">登录</van-button>
           </div>
           <div class="flex-1"></div>
       </div>
