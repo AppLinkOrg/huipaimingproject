@@ -5,6 +5,7 @@ import HomeView from '../views/home-view.vue'
 import UniversityView from '../views/university-view.vue'
 import UniversityInfoView from '../views/university-info-view.vue'
 import MemberView from '../views/member-view.vue'
+import DianpingView from '../views/dianping-view.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +39,11 @@ const router = createRouter({
       path: '/member',
       name: 'member',
       component: MemberView
+    },
+    {
+      path: '/dianping',
+      name: 'dianping',
+      component: DianpingView
     }
   ]
 })

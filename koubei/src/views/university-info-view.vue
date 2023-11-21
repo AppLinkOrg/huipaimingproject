@@ -18,8 +18,6 @@ HttpHelper.Post('inst/info').then((data) => {
   inst.value = data
 })
 var id = route.params.id
-
-var info = { name: '麻省理工', name1: 'Massachusetts Institute of Technology' }
 </script>
 <template>
   <div>

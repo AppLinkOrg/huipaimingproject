@@ -80,11 +80,17 @@
 .margin-top-22 {
   margin-top: 22px;
 }
+.margin-top-38 {
+  margin-top: 38px;
+}
 .margin-top-11 {
   margin-top: 11px;
 }
 .margin-top-7 {
   margin-top: 7px;
+}
+.margin-top-18 {
+  margin-top: 18px;
 }
 .margin-bottom-18 {
   margin-bottom: 18px;
@@ -184,4 +190,8 @@
 }
 .min-wh100 {
   min-height: 100vh;
+}
+
+.last-space {
+  height: 100px;
 }

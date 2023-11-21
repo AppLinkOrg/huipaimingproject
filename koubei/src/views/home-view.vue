@@ -35,6 +35,9 @@ const list = ref([
 const gotoMember = () => {
   router.push('/member')
 }
+const gotoDianping = () => {
+  router.push('/dianping')
+}
 </script>
 <template>
   <div>
@@ -63,7 +66,10 @@ const gotoMember = () => {
               <div class="hp-100 flex-1"></div>
             </div>
           </div>
-          <div class="memberdianping bg-primary margin-top-14 flex-row flex-center">
+          <div
+            class="memberdianping bg-primary margin-top-14 flex-row flex-center"
+            @click="gotoDianping"
+          >
             <img
               class="wh-24 margin-left-15 margin-right-15"
               :src="uploadpath + 'resource/' + resource.thumb"
@@ -166,8 +172,5 @@ const gotoMember = () => {
   position: fixed;
   bottom: 80px; /* 距离底部的距离 */
   right: 15px; /* 距离右侧的距离 */
-}
-.last-space {
-  height: 100px;
 }
 </style>

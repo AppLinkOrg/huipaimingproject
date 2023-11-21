@@ -19,6 +19,87 @@ HttpHelper.Post('inst/info').then((data) => {
 })
 const memberinfo = { mobile: 13751082562, score: 0.5, credit: 345 }
 const isdianping = ref(true)
+
+const dianpinglist = [
+  {
+    id: 1,
+    op_date: '2022年11月29',
+    name: '海底捞(茂业·时代广场店)',
+    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
+  },
+  {
+    id: 1,
+    op_date: '2022年11月29',
+    name: '海底捞(茂业·时代广场店)',
+    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
+  },
+  {
+    id: 1,
+    op_date: '2022年11月29',
+    name: '海底捞(茂业·时代广场店)',
+    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
+  },
+  {
+    id: 1,
+    op_date: '2022年11月29',
+    name: '海底捞(茂业·时代广场店)',
+    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
+  },
+  {
+    id: 1,
+    op_date: '2022年11月29',
+    name: '海底捞(茂业·时代广场店)',
+    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
+  },
+  {
+    id: 1,
+    op_date: '2022年11月29',
+    name: '海底捞(茂业·时代广场店)',
+    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
+  }
+]
+
+const searchlist = [
+  {
+    id: 1,
+    op_date: '2022年11月29',
+    name: '海底捞(茂业·时代广场店)',
+    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
+  },
+  {
+    id: 1,
+    op_date: '2022年11月29',
+    name: '海底捞(茂业·时代广场店)',
+    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
+  },
+  {
+    id: 1,
+    op_date: '2022年11月29',
+    name: '海底捞(茂业·时代广场店)',
+    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
+  },
+  {
+    id: 1,
+    op_date: '2022年11月29',
+    name: '海底捞(茂业·时代广场店)',
+    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
+  },
+  {
+    id: 1,
+    op_date: '2022年11月29',
+    name: '海底捞(茂业·时代广场店)',
+    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
+  },
+  {
+    id: 1,
+    op_date: '2022年11月29',
+    name: '海底捞(茂业·时代广场店)',
+    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
+  }
+]
+const logout = () => {
+  router.push('/')
+}
 </script>
 <template>
   <div>
@@ -41,7 +122,7 @@ const isdianping = ref(true)
                     </div>
                   </div>
                 </div>
-                <div class="logout">
+                <div class="logout" @click="logout">
                   <img class="wh-30" :src="uploadpath + 'resource/' + resource.logout" />
                 </div>
               </div>
@@ -70,10 +151,49 @@ const isdianping = ref(true)
         <div class="flex-row">
           <div class="flex-1"></div>
           <div class="section-block">
-            <div v-if="isdianping == true"></div>
-            <div v-if="isdianping == false"></div>
+            <div v-if="isdianping == true">
+              <block v-for="(item, index) in dianpinglist" :key="index">
+                <div class="dianpingbox bg-white margin-bottom-18">
+                  <div class="flex-row flex-center fc-black">
+                    <div class="flex-1 margin-right-15">
+                      <div class="f-13 fw-500">{{ item.op_date }}</div>
+                      <div class="f-15 fw-bold margin-top-18">{{ item.name }}</div>
+                      <div class="f-15 fw-bold margin-top-18">{{ item.name1 }}</div>
+                    </div>
+                    <div>
+                      <img class="wh-30" :src="uploadpath + 'resource/' + resource.vs" />
+                    </div>
+                  </div>
+                </div>
+              </block>
+            </div>
+            <div v-if="isdianping == false">
+              <div class="searchbox bg-white">
+                <block v-for="(item, index) in searchlist" :key="index">
+                  <div
+                    class="flex-row flex-center"
+                    :class="{ item: index + 1 < searchlist.length }"
+                  >
+                    <div class="flex-1 margin-right-15 fc-black f-15 fw-bold">{{ item.name }}</div>
+                    <div class="fc-black f-13 fw-400">{{ item.op_date }}</div>
+                  </div>
+                </block>
+              </div>
+            </div>
           </div>
           <div class="flex-1"></div>
+        </div>
+        <div class="last-space"></div>
+        <div class="bottom-block fc-gray">
+          <div class="flex-row flex-center">
+            <div class="flex-1"></div>
+            <div class="text-center">
+              <div class="margin-top-5">
+                <span class="f-12">{{ inst.banquan2 }}</span>
+              </div>
+            </div>
+            <div class="flex-1"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -108,5 +228,20 @@ const isdianping = ref(true)
 .tabitem {
   padding-top: 18px;
   padding-bottom: 18px;
+}
+.dianpingbox {
+  border-radius: 7px;
+  padding: 18px 15px;
+}
+.dianpingbox .vslogo {
+  width: 50px;
+  height: 50px;
+}
+.searchbox {
+  border-radius: 7px;
+  padding: 29px 22px;
+}
+.searchbox .item {
+  margin-bottom: 29px;
 }
 </style>
