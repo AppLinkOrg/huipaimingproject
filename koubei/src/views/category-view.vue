@@ -4,8 +4,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { ref, watch } from 'vue'
 import Config from '../httphelper/Config'
 import { HttpHelper } from '../httphelper/HttpHelper'
-const route = useRoute();
-const router = useRouter();
+const route = useRoute()
+const router = useRouter()
 const uploadpath = Config.UploadPath
 const resource = ref(null)
 HttpHelper.Post('inst/resources').then((data) => {
@@ -13,15 +13,15 @@ HttpHelper.Post('inst/resources').then((data) => {
 })
 const inst = ref(null)
 HttpHelper.Post('inst/info').then((data) => {
-    inst.value = data
+  inst.value = data
 })
-const gotoKoubei=()=>{
-    router.push('/login');
-};
+const gotoKoubei = () => {
+  router.push('/login')
+}
 </script>
 <template>
   <div>
-    <div v-if="resource != null&&inst != null">
+    <div v-if="resource != null && inst != null">
       <div class="flex-row">
         <div class="flex-1"></div>
         <img class="logo margin-top-49" :src="uploadpath + 'resource/' + resource.logo" />
@@ -48,14 +48,20 @@ const gotoKoubei=()=>{
       <div class="flex-row">
         <div class="flex-1"></div>
         <div>
-            <div class="margin-top-49 "><span class="fc-gray f-12">{{ inst.banquan2 }}</span></div>
+          <div class="margin-top-49">
+            <span class="fc-gray f-12">{{ inst.banquan2 }}</span>
+          </div>
         </div>
         <div class="flex-1"></div>
       </div>
       <div class="flex-row">
         <div class="flex-1"></div>
         <div>
-            <div><a :href="inst.icp_link" target="_blank" class="margin-top-11 fc-primary f-12">{{ inst.banquan }}</a></div>
+          <div>
+            <a :href="inst.icp_link" target="_blank" class="margin-top-11 fc-primary f-12">{{
+              inst.banquan
+            }}</a>
+          </div>
         </div>
         <div class="flex-1"></div>
       </div>

@@ -31,23 +31,23 @@
   font-size: 11px;
   line-height: 11px;
 }
-.f-15{
+.f-15 {
   font-size: 15px;
   line-height: 15px;
 }
-.f-16{
+.f-16 {
   font-size: 16px;
   line-height: 16px;
 }
-.f-18{
+.f-18 {
   font-size: 18px;
   line-height: 18px;
 }
-.f-18{
+.f-19 {
   font-size: 19px;
   line-height: 19px;
 }
-.fw-bold{
+.fw-bold {
   font-weight: bold;
 }
 .fw-500 {
@@ -62,13 +62,13 @@
 .fc-gray {
   color: #999999;
 }
-.fc-black{
+.fc-black {
   color: #333333;
 }
-.fc-primary{
-  color:#048695;
+.fc-primary {
+  color: #048695;
 }
-.w-100{
+.w-100 {
   width: 100vw;
 }
 .margin-top-49 {
@@ -83,98 +83,105 @@
 .margin-top-11 {
   margin-top: 11px;
 }
+.margin-top-7 {
+  margin-top: 7px;
+}
 .margin-bottom-18 {
   margin-bottom: 18px;
 }
-.margin-left-5{
+.margin-left-5 {
   margin-left: 5px;
 }
-.margin-left-15{
+.margin-left-15 {
   margin-left: 15px;
 }
-.margin-right-15{
+.margin-right-15 {
   margin-right: 15px;
 }
-.margin-left-10{
+.margin-right-30 {
+  margin-right: 30px;
+}
+.margin-left-10 {
   margin-left: 10px;
 }
-.margin-right-10{
+.margin-right-10 {
   margin-right: 10px;
 }
-.bg{
+.bg {
   background-image: url(http://applinkupload.oss-cn-shenzhen.aliyuncs.com/alucard263096/huipaimingkoube/resource/bfa7c04cd23f886ce0bdd4030fd37e9e_231116112737_1837152972.png);
 }
-.section-block{
-  width:350px;
+.section-block {
+  width: 350px;
 }
-.section-padding{
+.section-padding {
   padding: 18px 22px;
 }
 .input {
   border: none; /* 去掉边框 */
   outline: none; /* 去掉轮廓 */
 }
-.wp-100{
+.wp-100 {
   width: 100%;
 }
-.hp-100{
+.hp-100 {
   height: 100%;
 }
 
-  .overlay-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-  }
+.overlay-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
 
-  
 .bg-white {
   background-color: white;
 }
 .bg-gray {
-  background-color: #999999;
+  background-color: #fafafa;
 }
-.bg-black{
+.bg-black {
   background-color: #333333;
 }
-.bg-primary{
-  background-color:#048695;
+.bg-primary {
+  background-color: #048695;
 }
-.bottom-block{
-  width:100vw;
-  position:fixed;
-  left:0;
-  bottom:0px;
+.bottom-block {
+  width: 100vw;
+  position: fixed;
+  left: 0;
+  bottom: 0px;
   margin-bottom: 14px;
 }
-.wh-16{
+.wh-16 {
   width: 16px;
-  height:16px;
+  height: 16px;
 }
-.wh-24{
+.wh-24 {
   width: 24px;
-  height:24px;
+  height: 24px;
 }
-.wh-10{
+.wh-10 {
   width: 10px;
-  height:10px;
+  height: 10px;
 }
-.wh-20{
+.wh-20 {
   width: 20px;
-  height:20px;
+  height: 20px;
 }
-.wh-30{
+.wh-30 {
   width: 30px;
-  height:30px;
+  height: 30px;
 }
-.opacity{
-  opacity:0.6;
+.opacity {
+  opacity: 0.6;
 }
-.text-center{
+.text-center {
   text-align: center;
 }
-.min-wh100{
+.text-right {
+  text-align: right;
+}
+.min-wh100 {
   min-height: 100vh;
-  
 }

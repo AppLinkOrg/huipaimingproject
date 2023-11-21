@@ -3,7 +3,8 @@ import CategoryView from '../views/category-view.vue'
 import LoginView from '../views/login-view.vue'
 import HomeView from '../views/home-view.vue'
 import UniversityView from '../views/university-view.vue'
-
+import UniversityInfoView from '../views/university-info-view.vue'
+import MemberView from '../views/member-view.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,16 @@ const router = createRouter({
       path: '/university/:id',
       name: 'university',
       component: UniversityView
+    },
+    {
+      path: '/university/info/:id',
+      name: 'universityinfo',
+      component: UniversityInfoView
+    },
+    {
+      path: '/member',
+      name: 'member',
+      component: MemberView
     }
   ]
 })
