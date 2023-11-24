@@ -10,6 +10,8 @@ const route = useRoute()
 const router = useRouter()
 const uploadpath = Config.UploadPath
 const resource = ref(null)
+onMounted(()=>{
+});
 HttpHelper.Post('inst/resources').then((data) => {
   resource.value = data
 })
@@ -17,7 +19,24 @@ const inst = ref(null)
 HttpHelper.Post('inst/info').then((data) => {
   inst.value = data
 })
+
+const member = ref(null)
+HttpHelper.Post('member/info').then((data) => {
+  if(data==null){
+    router.push("/login")
+    return;
+  }
+  member.value = data
+})
 var id = route.params.id
+HttpHelper.Post('daxue/addremen',{name:id});
+
+
+var info = ref({})
+HttpHelper.Post('daxue/daxueinfo',{id}).then((data) => {
+  route.meta.title=data.name;
+  info.value = data
+})
 var option = {
   xAxis: {
     type: 'category',
@@ -76,7 +95,6 @@ var option2 = {
     }
   ]
 }
-var info = { name: '麻省理工', name1: 'Massachusetts Institute of Technology' }
 const isrank = ref(true)
 </script>
 <template>
@@ -124,7 +142,7 @@ const isrank = ref(true)
               </div>
               <div class="flex-row flex-center text-center">
                 <div class="">
-                  <img class="wh-88" :src="uploadpath + 'resource/' + resource.masheng" />
+                  <img class="wh-88" :src="uploadpath + 'daxue/' + info.logo" />
                 </div>
                 <div class="flex-1 text-center">
                   <div>2039</div>
@@ -139,28 +157,28 @@ const isrank = ref(true)
                   </div>
                 </div>
                 <div class="">
-                  <img class="wh-88" :src="uploadpath + 'resource/' + resource.masheng" />
+                  <img class="wh-88" :src="uploadpath + 'daxue/' + info.logo" />
                 </div>
               </div>
             </div>
           </div>
           <div class="flex-1"></div>
         </div>
-      </div>
-      <div class="last-space"></div>
-      <div class="bottom-block fc-white">
-        <div class="flex-row flex-center">
-          <div class="flex-1"></div>
-          <div class="text-center">
-            <div>
-              <RouterLink class="fc-white" to="/content/aboutus">关于我们</RouterLink> 丨
-              <RouterLink class="fc-white" to="/content/feedback">意见反馈</RouterLink>
+        <div class="last-space"></div>
+        <div class="bottom-block fc-white bg-primary">
+          <div class="flex-row flex-center">
+            <div class="flex-1"></div>
+            <div class="text-center">
+              <div>
+                <RouterLink class="fc-white" to="/content/aboutus">关于我们</RouterLink> 丨
+                <RouterLink class="fc-white" to="/content/feedback">意见反馈</RouterLink>
+              </div>
+              <div class="margin-top-5">
+                <span class="f-12">{{ inst.banquan2 }}</span>
+              </div>
             </div>
-            <div class="margin-top-5">
-              <span class="f-12">{{ inst.banquan2 }}</span>
-            </div>
+            <div class="flex-1"></div>
           </div>
-          <div class="flex-1"></div>
         </div>
       </div>
     </div>

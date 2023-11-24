@@ -7,7 +7,7 @@ import VueAxios from 'vue-axios'
 
 import App from './App.vue'
 import router from './router'
-import { Loading, Overlay, Button, Checkbox } from 'vant'
+import { Loading, Overlay, Button, Checkbox,Toast,Dialog  } from 'vant'
 import { VueEcharts } from 'vue3-echarts'
 import 'vant/lib/index.css'
 
@@ -21,4 +21,6 @@ app.use(Overlay)
 app.use(Button)
 app.use(Checkbox)
 app.use(VueEcharts)
+app.use(Toast)
+app.use(Dialog)
 app.mount('#app')

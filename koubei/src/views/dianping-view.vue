@@ -19,21 +19,34 @@ HttpHelper.Post('inst/info').then((data) => {
   inst.value = data
 })
 
-const uinfo1 = { id: 1, name: '清华大学', name1: 'qinghua' }
-const uinfo2 = { id: 2, name: '清华大学', name1: 'qinghua' }
+const uinfo1 = ref(null)
+const uinfo2 = ref(null)
 const ux = ref(1)
 const clickUx = (x) => {
   ux.value = x
 }
-const randomChange = () => {
-  loading.value = true
-  setTimeout(() => {
-    loading.value = false
-  }, 1000)
-}
+
 const goBack = () => {
   router.back()
 }
+var insearch=false;
+const randomChange=()=>{
+  if(loading.value==true){
+    return;
+  }
+  loading.value=true;
+  setTimeout(() => {
+  HttpHelper.Post("daxue/daxuelist", {
+    limit:"2",
+    needrandom:"1"
+  }).then((daxuelist) => {
+    loading.value=false;
+    uinfo1.value=daxuelist[0];
+    uinfo2.value=daxuelist[1];
+  });
+}, 1000)
+}
+randomChange();
 </script>
 <template>
   <div>
@@ -52,15 +65,16 @@ const goBack = () => {
               <img class="logo" :src="uploadpath + 'resource/' + resource.logo" />
               <div class="flex-1"></div>
             </div>
-            <div>
+            <div class="flex-row flex-center">
               <div
                 class="universitybox bg-white"
                 :class="{ universitybox2: ux == 1 }"
                 @click="clickUx(1)"
+                ondblclick="toupiao(uinfo1.id)"
               >
-                <div class="flex-row flex-center">
-                  <div>
-                    <img class="uni-logo" :src="uploadpath + 'resource/' + resource.masheng" />
+                <div class="flex-column flex-center" v-if="uinfo1!=null">
+                  <div class="flex-1">
+                    <img class="uni-logo" :src="uploadpath + 'daxue/' + uinfo1.logo" />
                   </div>
                   <div class="flex-1 margin-left-15">
                     <div class="f-18 fw-bold fc-black">{{ uinfo1.name }}</div>
@@ -77,21 +91,22 @@ const goBack = () => {
                 class="universitybox bg-white"
                 :class="{ universitybox2: ux == 2 }"
                 @click="clickUx(2)"
+                ondblclick="toupiao(uinfo2.id)"
               >
-                <div class="flex-row flex-center">
+                <div class="flex-column flex-center" v-if="uinfo2!=null">
+                  <div class="flex-1">
+                    <img class="uni-logo" :src="uploadpath + 'daxue/' + uinfo2.logo" />
+                  </div>
                   <div class="flex-1 margin-right-15">
                     <div class="f-18 fw-bold fc-black">{{ uinfo2.name }}</div>
                     <div class="f-15 fw-40 margin-top-22 fc-black">{{ uinfo2.name1 }}</div>
                   </div>
-                  <div>
-                    <img class="uni-logo" :src="uploadpath + 'resource/' + resource.masheng" />
-                  </div>
                 </div>
               </div>
+            </div>
               <div class="text-center fc-primary f-15 fw-500 margin-top-49">
                 双击学校即可点赞，单机可单选内容哦
               </div>
-            </div>
             <div class="flex-row flex-center margin-top-49">
               <div class="flex-1">
                 <van-button type="primary" block round :color="Config.PrimaryColor" @click="goBack"
@@ -136,6 +151,8 @@ const goBack = () => {
   margin-bottom: 50px;
 }
 .universitybox {
+  width: 150px;
+  height:405px;
   padding: 12px 16px;
   box-shadow: 0px 0px 14px 1px rgba(3, 134, 148, 0.04);
   border-radius: 15px;

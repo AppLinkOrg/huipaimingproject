@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ref, watch } from 'vue'
 import Config from '../httphelper/Config'
 import { HttpHelper } from '../httphelper/HttpHelper'
+import { onMounted } from 'vue'
 const route = useRoute()
 const router = useRouter()
 const uploadpath = Config.UploadPath
@@ -15,9 +16,20 @@ const inst = ref(null)
 HttpHelper.Post('inst/info').then((data) => {
   inst.value = data
 })
+const member = ref(null)
+HttpHelper.Post('member/info').then((data) => {
+  member.value = data
+})
 const gotoKoubei = () => {
-  router.push('/login')
+  if(member.value==null){
+    router.push('/login')
+  }else{
+    router.push('/home')
+  }
 }
+onMounted(()=>{
+  route.meta.title="汇排名";
+});
 </script>
 <template>
   <div>

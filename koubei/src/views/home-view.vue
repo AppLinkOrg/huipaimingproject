@@ -4,6 +4,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { ref, watch } from 'vue'
 import Config from '../httphelper/Config'
 import { HttpHelper } from '../httphelper/HttpHelper'
+import { showToast,showDialog } from 'vant';
+import { onMounted } from 'vue'
 const route = useRoute()
 const router = useRouter()
 const uploadpath = Config.UploadPath
@@ -15,28 +17,56 @@ const inst = ref(null)
 HttpHelper.Post('inst/info').then((data) => {
   inst.value = data
 })
+const member = ref(null)
+HttpHelper.Post('member/info').then((data) => {
+  if(data==null){
+    router.push("/login")
+    return;
+  }
+  member.value = data
+})
 const iszh = ref(true)
-const list = ref([
-  { id: 1, name: '清华大学', name1: 'qinghua' },
-  { id: 2, name: '北京大学', name1: 'beijingdaxue' },
-  { id: 3, name: '复旦大学', name1: 'fudandaxue' },
-  { id: 4, name: '上海交通大学', name1: 'shanghaijiaotongdaxue' },
-  { id: 5, name: '武汉大学', name1: 'wuhandaxue' },
-  { id: 6, name: '南京大学', name1: 'nanjingdaxue' },
-  { id: 7, name: '中山大学', name1: 'zhongshandaxue' },
-  { id: 8, name: '同济大学', name1: 'tongjidaxue' },
-  { id: 9, name: '华中科技大学', name1: 'huazhongkejidaxue' },
-  { id: 10, name: '浙江大学', name1: 'zhejiangdaxue' },
-  { id: 11, name: '四川大学', name1: 'sichuandaxue' },
-  { id: 12, name: '电子科技大学', name1: 'dianzikejidaxue' },
-  { id: 13, name: '西安交通大学', name1: 'xianjiaotongdaxue' },
-  { id: 14, name: '哈尔滨工业大学', name1: 'haerbangongyedaxue' }
-])
+const list = ref([])
+HttpHelper.Post('daxue/remenlist').then((data) => {
+  list.value=data;
+})
+
+onMounted(()=>{
+  route.meta.title="汇排名";
+});
 const gotoMember = () => {
   router.push('/member')
 }
 const gotoDianping = () => {
   router.push('/dianping')
+}
+const keyword=ref("");
+const searchlist=ref([])
+var insearch=false;
+const search=()=>{
+  if(insearch==true){
+    return;
+  }
+  if(keyword.value.trim()==''){
+    keyword.value="";
+    searchlist.value = [];
+    return
+  }
+  insearch=true;
+  HttpHelper.Post("daxue/daxuelist", {
+    keywords: keyword.value
+  }).then((daxuelist) => {
+    insearch=false;
+    searchlist.value = daxuelist;
+    if (daxuelist.length == 0) {
+      showToast("搜索结果不存在，请检查关键字")
+      showDialog({
+        title: '提示',
+        message: '搜索结果不存在，请检查关键字',
+        confirmButtonText:"确认"
+      })
+    } 
+  });
 }
 </script>
 <template>
@@ -57,10 +87,10 @@ const gotoDianping = () => {
                   class="search-icon wh-16 margin-left-15 margin-right-15"
                   :src="uploadpath + 'resource/' + resource.search"
                 />
-                <input class="flex-1 margin-right-5 input" placeholder="请输入大学中文或英文名称" />
+                <input class="flex-1 margin-right-5 input" placeholder="请输入大学中文或英文名称" v-model="keyword" />
               </div>
             </div>
-            <div class="searchboxbtn hp-100 flex-row flex-center bg-primary f-15 fc-white fw-500">
+            <div class="searchboxbtn hp-100 flex-row flex-center bg-primary f-15 fc-white fw-500" @click="search">
               <div class="hp-100 flex-1"></div>
               <div>搜索</div>
               <div class="hp-100 flex-1"></div>
@@ -82,6 +112,26 @@ const gotoDianping = () => {
               :src="uploadpath + 'resource/' + resource.right"
             />
           </div>
+          <block v-if="searchlist.length">
+            <div class="hotsearch margin-top-14 flex-row flex-center">
+              <div class="f-18 fw-bold fc-black">搜索结果</div>
+              <img
+                @click="iszh = !iszh"
+                class="wh-30 margin-left-10"
+                :src="uploadpath + 'resource/' + (iszh ? resource.zh : resource.en)"
+              />
+            </div>
+            <div class="margin-top-22">
+              <block v-for="(item, index) in searchlist" :key="index">
+                <block v-if="index<30">
+                <RouterLink :to="'/university/' + item.id" class="flex-row flex-center result-item">
+                  <div class="f-15 fw-500 fc-black">{{ iszh ? item.name : item.name1 }}</div>
+                </RouterLink>
+               </block>
+              </block>
+            </div>
+            <div class="margin-top-22 f-12 fw-500 fc-gray" v-if="searchlist.length>30">搜索结果仅显示前30条，请增加关键字以缩小搜索结果</div>
+          </block>
           <div class="hotsearch margin-top-14 flex-row flex-center">
             <div class="f-18 fw-bold fc-black">热门搜索</div>
             <img
@@ -92,11 +142,11 @@ const gotoDianping = () => {
           </div>
           <div class="margin-top-22">
             <block v-for="(item, index) in list" :key="index">
-              <RouterLink :to="'/university/' + item.id" class="flex-row flex-center result-item">
+              <RouterLink :to="'/university/' + item.name" class="flex-row flex-center result-item">
                 <div class="f-16 fw-bold no" :class="{ is123: index < 3 ? true : false }">
                   {{ index + 1 }}
                 </div>
-                <div class="f-15 fw-500 fc-black">{{ iszh ? item.name : item.name1 }}</div>
+                <div class="f-15 fw-500 fc-black">{{ iszh ? item.r_name_name : item.r_name_name1 }}</div>
               </RouterLink>
             </block>
           </div>
@@ -112,7 +162,7 @@ const gotoDianping = () => {
         <div class="flex-1"></div>
       </div>
       <div class="last-space"></div>
-      <div class="bottom-block">
+      <div class="bottom-block bg-white">
         <div class="flex-row flex-center">
           <div class="flex-1"></div>
           <div class="text-center">
