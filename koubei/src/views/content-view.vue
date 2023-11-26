@@ -21,9 +21,9 @@ const inst = ref(null)
 HttpHelper.Post('inst/info').then((data) => {
   inst.value = data
 })
-var id = route.params.id
+var keycode = route.params.keycode
 var info = ref({})
-HttpHelper.Post('daxue/daxueinfo',{id}).then((data) => {
+HttpHelper.Post('content/get',{keycode}).then((data) => {
   route.meta.title=data.name;
   data.content = Utils.HtmlDecode(data.content);
   info.value = data

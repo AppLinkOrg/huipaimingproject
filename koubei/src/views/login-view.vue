@@ -137,8 +137,8 @@ const login = () => {
         <div class="flex-1"></div>
         <van-checkbox v-model="checked" :checked-color="Config.PrimaryColor"></van-checkbox>
         <div class="f-12 margin-left-5">
-          我已阅读<router-link to="/context/aboutus" class="fc-primary">《用户协议》</router-link
-          >和<router-link class="fc-primary" to="/context/aboutus">《隐私政策》</router-link
+          我已阅读<router-link to="/context/useragreement" class="fc-primary">《用户协议》</router-link
+          >和<router-link class="fc-primary" to="/context/privacy">《隐私政策》</router-link
           >并理解相关条款内容
         </div>
         <div class="flex-1"></div>

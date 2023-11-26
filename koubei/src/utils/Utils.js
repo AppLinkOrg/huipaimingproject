@@ -23,8 +23,8 @@ export class Utils {
 
     //s = s.replace(new RegExp("</p>", "gm"), "</p><br />");
 
-    var reg = new RegExp('"/alucard263096/kalianmifi/upload/', 'g') //创建正则RegExp对象
-    s = s.replace(reg, '"https://cmsdev.app-link.org/alucard263096/huipaimingkoubei/upload/')
+    var reg = new RegExp('"/alucard263096/huipaimingkoube/upload/', 'g') //创建正则RegExp对象
+    s = s.replace(reg, '"https://cmsdev.app-link.org/alucard263096/huipaimingkoube/upload/')
 
     //var reg = new RegExp('"/upload/', 'g') //创建正则RegExp对象
     //s = s.replace(reg, '"https://api.kalianworld.cn/upload/')

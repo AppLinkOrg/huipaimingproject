@@ -6,6 +6,7 @@ import UniversityView from '../views/university-view.vue'
 import UniversityInfoView from '../views/university-info-view.vue'
 import MemberView from '../views/member-view.vue'
 import DianpingView from '../views/dianping-view.vue'
+import ContentView from '../views/content-view.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,9 +32,14 @@ const router = createRouter({
       component: UniversityView
     },
     {
-      path: '/university/info/:id',
+      path: '/university-info/:id',
       name: 'universityinfo',
       component: UniversityInfoView
+    },
+    {
+      path: '/content/:keycode',
+      name: 'contentview',
+      component: ContentView
     },
     {
       path: '/member',

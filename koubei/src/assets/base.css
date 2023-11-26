@@ -35,6 +35,9 @@
 
   --section-gap: 160px;
 }
+:root{
+  --van-nav-bar-background: red;
+}
 
 @media (prefers-color-scheme: dark) {
   :root {

@@ -68,6 +68,10 @@ const search=()=>{
     } 
   });
 }
+const addsearchresult=(daxue_id)=>{
+  HttpHelper.Post("member/searchrecord", {daxue_id});
+  
+}
 </script>
 <template>
   <div>
@@ -125,7 +129,7 @@ const search=()=>{
               <block v-for="(item, index) in searchlist" :key="index">
                 <block v-if="index<30">
                 <RouterLink :to="'/university/' + item.id" class="flex-row flex-center result-item">
-                  <div class="f-15 fw-500 fc-black">{{ iszh ? item.name : item.name1 }}</div>
+                  <div class="f-15 fw-500 fc-black" @click="addsearchresult(item.id)">{{ iszh ? item.name : item.name1 }}</div>
                 </RouterLink>
                </block>
               </block>

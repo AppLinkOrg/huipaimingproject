@@ -10,6 +10,9 @@ const route = useRoute()
 const router = useRouter()
 const uploadpath = Config.UploadPath
 const resource = ref(null)
+const onNavClickLeft=()=>{
+  router.back();
+}
 HttpHelper.Post('inst/resources').then((data) => {
   resource.value = data
 })
@@ -17,108 +20,54 @@ const inst = ref(null)
 HttpHelper.Post('inst/info').then((data) => {
   inst.value = data
 })
-const memberinfo = { mobile: 13751082562, score: 0.5, credit: 345 }
+const member = ref(null)
+HttpHelper.Post('member/info').then((data) => {
+  if(data==null){
+    router.push("/login")
+    return;
+  }
+  member.value = data
+})
 const isdianping = ref(true)
+const dianpinglist=ref([])
+HttpHelper.Post('member/dianpinglist').then((data) => {
+  dianpinglist.value=data;
+});
 
-const dianpinglist = [
-  {
-    id: 1,
-    op_date: '2022年11月29',
-    name: '海底捞(茂业·时代广场店)',
-    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
-  },
-  {
-    id: 1,
-    op_date: '2022年11月29',
-    name: '海底捞(茂业·时代广场店)',
-    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
-  },
-  {
-    id: 1,
-    op_date: '2022年11月29',
-    name: '海底捞(茂业·时代广场店)',
-    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
-  },
-  {
-    id: 1,
-    op_date: '2022年11月29',
-    name: '海底捞(茂业·时代广场店)',
-    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
-  },
-  {
-    id: 1,
-    op_date: '2022年11月29',
-    name: '海底捞(茂业·时代广场店)',
-    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
-  },
-  {
-    id: 1,
-    op_date: '2022年11月29',
-    name: '海底捞(茂业·时代广场店)',
-    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
-  }
-]
+const searchlist=ref([])
+HttpHelper.Post('member/searchrecordlist').then((data) => {
+  searchlist.value=data;
+});
 
-const searchlist = [
-  {
-    id: 1,
-    op_date: '2022年11月29',
-    name: '海底捞(茂业·时代广场店)',
-    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
-  },
-  {
-    id: 1,
-    op_date: '2022年11月29',
-    name: '海底捞(茂业·时代广场店)',
-    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
-  },
-  {
-    id: 1,
-    op_date: '2022年11月29',
-    name: '海底捞(茂业·时代广场店)',
-    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
-  },
-  {
-    id: 1,
-    op_date: '2022年11月29',
-    name: '海底捞(茂业·时代广场店)',
-    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
-  },
-  {
-    id: 1,
-    op_date: '2022年11月29',
-    name: '海底捞(茂业·时代广场店)',
-    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
-  },
-  {
-    id: 1,
-    op_date: '2022年11月29',
-    name: '海底捞(茂业·时代广场店)',
-    name1: '凑凑火锅·茶憩(卓悦INTOWN福田店)'
-  }
-]
 const logout = () => {
+  localStorage.removeItem("token");
   router.push('/')
 }
 </script>
 <template>
   <div>
+    <van-nav-bar
+      title="个人中心"
+        left-arrow
+        fixed
+        @click-left="onNavClickLeft"
+      />
     <div v-if="resource != null && inst != null">
       <div class="bg-gray min-wh100">
         <div class="bg-primary">
           <div class="flex-row">
             <div class="flex-1"></div>
-            <div class="section-block">
+            <div class="section-block margin-top-49">
               <div class="flex-row flex-center memberinfo">
                 <div class="memberphoto"></div>
                 <div class="flex-1 margin-left-15 margin-right-15">
-                  <div class="f-18 fw-bold fc-white">{{ memberinfo.mobile }}</div>
+                  <div class="f-18 fw-bold fc-white">{{ member.mobile }}</div>
                   <div class="flex-row margin-top-11">
                     <div class="databox fc-white fw-400 f-13 flex-row flex-center margin-right-15">
-                      实力: {{ memberinfo.score }}
+                      实力: {{ member.score }}
                     </div>
-                    <div class="databox fc-white fw-400 f-13 flex-row flex-center">
-                      信用: {{ memberinfo.credit }}
+                    <div class="member fc-white fw-400 f-13 flex-row flex-center">
+                      信用: {{ member.credit }}
                     </div>
                   </div>
                 </div>
@@ -156,9 +105,9 @@ const logout = () => {
                 <div class="dianpingbox bg-white margin-bottom-18">
                   <div class="flex-row flex-center fc-black">
                     <div class="flex-1 margin-right-15">
-                      <div class="f-13 fw-500">{{ item.op_date }}</div>
-                      <div class="f-15 fw-bold margin-top-18">{{ item.name }}</div>
-                      <div class="f-15 fw-bold margin-top-18">{{ item.name1 }}</div>
+                      <div class="f-13 fw-500">{{ item.time_formatting }}</div>
+                      <div class="f-15 fw-bold margin-top-18" :class="{'fc-primary':item.num1==1}">{{ item.r_daxue1_name }}</div>
+                      <div class="f-15 fw-bold margin-top-18" :class="{'fc-primary':item.num2==1}">{{ item.r_daxue_name }}</div>
                     </div>
                     <div>
                       <img class="wh-30" :src="uploadpath + 'resource/' + resource.vs" />
@@ -174,8 +123,8 @@ const logout = () => {
                     class="flex-row flex-center"
                     :class="{ item: index + 1 < searchlist.length }"
                   >
-                    <div class="flex-1 margin-right-15 fc-black f-15 fw-bold">{{ item.name }}</div>
-                    <div class="fc-black f-13 fw-400">{{ item.op_date }}</div>
+                    <div class="flex-1 margin-right-15 fc-black f-15 fw-bold">{{ item.r_daxue_name }}</div>
+                    <div class="fc-black f-13 fw-400">{{ item.op_time_formatting }}</div>
                   </div>
                 </block>
               </div>
