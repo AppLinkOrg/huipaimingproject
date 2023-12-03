@@ -36,46 +36,66 @@ var id = route.params.id
 HttpHelper.Post('daxue/addremen',{name:id});
 
 
+const formatDate = (date) => {
+  // Implement your own date formatting logic here
+  return `${date[0]}-${date[1]}-${date[2]}`;
+};
 var info = ref({})
+const minop=ref(["2021","01","01"])
+const maxop=ref(["2021","01","01"])
 HttpHelper.Post('daxue/daxueinfo',{id}).then((data) => {
   route.meta.title=data.name;
+  var vmin=new Date(data.minop)
+  var vmax=new Date(data.maxop)
+  data.minop=new Date(data.minop)
+  data.maxop=new Date(data.maxop)
   info.value = data
+  
+  minop.value=[vmin.getFullYear(),vmin.getMonth()+1,vmin.getDate()]
+  maxop.value=[vmax.getFullYear(),vmax.getMonth()+1,vmax.getDate()]
+
+  loaddaxueyear()
+  
 })
-var option=ref(null);
-HttpHelper.Post('daxue/daxueyear',{daxue_id:id,orderby:"year"}).then((data) => {
-  var years=[];
-  var ranks=[];
-  for(var i=0;i<data.length;i++){
-    years.push(data[i].op_time);
-    ranks.push(data[i].rank);
-  }
-  option.value={
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'cross'
-      }
-    },
-    xAxis: {
-      type: 'category',
-      data: years
-    },
-    yAxis: {
-      axisLabel: {
-        margin: 30,
-        fontSize: 16,
-        formatter: '#{value}'
+const loaddaxueyear=()=>{
+  var startdate=formatDate(minop.value)
+  var enddate=formatDate(maxop.value)
+  HttpHelper.Post('daxue/daxueyear',{daxue_id:id,startdate,enddate,orderby:"year"}).then((data) => {
+    var years=[];
+    var ranks=[];
+    for(var i=0;i<data.length;i++){
+      years.push(data[i].op_time);
+      ranks.push(data[i].rank);
+    }
+    option.value={
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross'
+        }
       },
-      type: 'value'
-    },
-    series: [
-      {
-        data: ranks,
-        type: 'line'
-      }
-    ]
-  };
-});
+      xAxis: {
+        type: 'category',
+        data: years
+      },
+      yAxis: {
+        axisLabel: {
+          margin: 30,
+          fontSize: 16,
+          formatter: '#{value}'
+        },
+        type: 'value'
+      },
+      series: [
+        {
+          data: ranks,
+          type: 'line'
+        }
+      ]
+    };
+  });
+}
+var option=ref(null);
 var option2=ref(null);
 HttpHelper.Post('daxue/top',{id:id}).then((list) => {
   option2.value={
@@ -461,6 +481,31 @@ const isrank = ref(true)
 const gotoinfo=()=>{
   router.push("/university-info/"+id)
 }
+const showMinPicker=ref(false)
+const showMaxPicker=ref(false)
+
+const onConfirmMin = (date) => {
+  checkpk();
+  showMinPicker.value = false;
+};
+
+const onConfirmMax = (date) => {
+  checkpk();
+  showMaxPicker.value = false;
+};
+const checkpk=()=>{
+  var v1=parseInt(minop.value[0])*10000+parseInt(minop.value[1])*100+parseInt( minop.value[2])
+  var v2=parseInt(maxop.value[0])*10000+parseInt(maxop.value[1])*100+parseInt( maxop.value[2])
+  console.log("checkpk",v1,v2)
+  if(v1>v2){
+    var t=minop.value;
+    var t2=maxop.value;
+    minop.value=t2;
+    maxop.value=t;
+  }
+  loaddaxueyear()
+}
+
 </script>
 <template>
   <div>
@@ -471,6 +516,24 @@ const gotoinfo=()=>{
         fixed
         @click-left="onNavClickLeft"
       />
+      <van-popup v-if="showMinPicker" v-model:show="showMinPicker" position="bottom">
+        <van-date-picker
+        v-model="minop"
+        :min-date="info.minop"
+        :max-date="info.maxop"
+        @confirm="onConfirmMin"
+        @cancel="showMinPicker = false"
+      />
+      </van-popup>
+      <van-popup v-if="showMaxPicker" v-model:show="showMaxPicker" position="bottom">
+        <van-date-picker
+        v-model="maxop"
+        :min-date="info.minop"
+        :max-date="info.maxop"
+        @confirm="onConfirmMax"
+        @cancel="showMaxPicker = false"
+      />
+      </van-popup>
       <div class="min-wh100 bg-primary">
         <div class="flex-row">
           <div class="flex-1"></div>
@@ -496,7 +559,15 @@ const gotoinfo=()=>{
               </div>
               <div class="section-padding" v-if="isrank == true">
                 <div id="timerank" ref="echart" v-if="option!=null">
-                  <vue-echarts :option="option" style="height: 500px" ref="chart" />
+                  <div  class="text-center flex-row flex-center">
+                    <div class="flex-1"></div>
+                    <div class="margin-right-15 margin-left-15">从</div>
+                    <van-button type="primary" size="mini" :color="Config.PrimaryColor" @click="showMinPicker=true">{{ formatDate(minop) }}</van-button>
+                    <div class="margin-right-15  margin-left-15">到</div>
+                    <van-button type="primary" size="mini" :color="Config.PrimaryColor" @click="showMaxPicker=true">{{ formatDate(maxop) }}</van-button>
+                    <div class="flex-1"></div>
+                  </div>
+                    <vue-echarts :option="option" style="height: 500px" ref="chart" />
                 </div>
               </div>
               <div class="section-padding" v-if="isrank == false">
@@ -542,7 +613,7 @@ const gotoinfo=()=>{
             <div class="text-center">
               <div>
                 <RouterLink class="fc-white" to="/content/aboutus">关于我们</RouterLink> 丨
-                <RouterLink class="fc-white" to="/content/feedback">意见反馈</RouterLink>
+                <RouterLink class="fc-white" to="/feedback">意见反馈</RouterLink>
               </div>
               <div class="margin-top-5">
                 <span class="f-12">{{ inst.banquan2 }}</span>

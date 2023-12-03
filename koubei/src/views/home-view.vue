@@ -172,7 +172,7 @@ const addsearchresult=(daxue_id)=>{
           <div class="text-center">
             <div>
               <RouterLink class="fc-primary" to="/content/aboutus">关于我们</RouterLink> 丨
-              <RouterLink class="fc-primary" to="/content/feedback">意见反馈</RouterLink>
+              <RouterLink class="fc-primary" to="/feedback">意见反馈</RouterLink>
             </div>
             <div class="margin-top-5">
               <span class="fc-gray f-12">{{ inst.banquan2 }}</span>

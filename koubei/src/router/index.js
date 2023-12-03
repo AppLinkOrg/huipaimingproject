@@ -7,6 +7,7 @@ import UniversityInfoView from '../views/university-info-view.vue'
 import MemberView from '../views/member-view.vue'
 import DianpingView from '../views/dianping-view.vue'
 import ContentView from '../views/content-view.vue'
+import FeedbackView from '../views/feedback-view.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,6 +51,11 @@ const router = createRouter({
       path: '/dianping',
       name: 'dianping',
       component: DianpingView
+    },
+    {
+      path: '/feedback',
+      name: 'feedback',
+      component: FeedbackView
     }
   ]
 })

@@ -7,7 +7,8 @@ import VueAxios from 'vue-axios'
 
 import App from './App.vue'
 import router from './router'
-import { Loading, Overlay, Button, Checkbox,Toast,Dialog,NavBar,ConfigProvider    } from 'vant'
+import { Loading, Overlay, Button, Checkbox,Toast,Dialog,NavBar
+    ,ConfigProvider,Field,Form ,Calendar,DatePicker,Popup     } from 'vant'
 import { VueEcharts } from 'vue3-echarts'
 import 'vant/lib/index.css'
 
@@ -25,4 +26,9 @@ app.use(Toast)
 app.use(Dialog)
 app.use(NavBar)
 app.use(ConfigProvider);
+app.use(Field);
+app.use(Form);
+app.use(Calendar);
+app.use(DatePicker);
+app.use(Popup);
 app.mount('#app')
