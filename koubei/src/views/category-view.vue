@@ -21,15 +21,15 @@ HttpHelper.Post('member/info').then((data) => {
   member.value = data
 })
 const gotoKoubei = () => {
-  if(member.value==null){
+  if (member.value == null) {
     router.push('/login')
-  }else{
+  } else {
     router.push('/home')
   }
 }
-onMounted(()=>{
-  route.meta.title="汇排名";
-});
+onMounted(() => {
+  route.meta.title = '汇排名'
+})
 </script>
 <template>
   <div>

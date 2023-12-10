@@ -53,4 +53,127 @@ export class Utils {
     }
     return arrstr.join(',')
   }
+  static GetPKData(list) {
+    var ret = []
+    ret.push({
+      name: '本校',
+      x: 0,
+      y: 0
+    })
+    if (list[0] != null) {
+      ret.push({
+        name: 'TOP 1',
+        x: 100,
+        y: 0,
+        duibi: list[0]
+      })
+    }
+    if (list[1] != null) {
+      ret.push({
+        name: 'TOP 2',
+        x: 80.9,
+        y: 58.78,
+        duibi: list[1]
+      })
+    }
+    if (list[2] != null) {
+      ret.push({
+        name: 'TOP 3',
+        x: 30.9,
+        y: 95.11,
+        duibi: list[2]
+      })
+    }
+    if (list[3] != null) {
+      ret.push({
+        name: 'TOP 4',
+        x: -30.9,
+        y: 95.11,
+        duibi: list[3]
+      })
+    }
+    if (list[4] != null) {
+      ret.push({
+        name: 'TOP 5',
+        x: -80.9,
+        y: 58.78,
+        duibi: list[4]
+      })
+    }
+    if (list[5] != null) {
+      ret.push({
+        name: 'TOP 6',
+        x: -100,
+        y: 0,
+        duibi: list[5]
+      })
+    }
+    if (list[6] != null) {
+      ret.push({
+        name: 'TOP 7',
+        x: -80.9,
+        y: -58.78,
+        duibi: list[6]
+      })
+    }
+    if (list[7] != null) {
+      ret.push({
+        name: 'TOP 8',
+        x: -30.9,
+        y: -95.11,
+        duibi: list[7]
+      })
+    }
+    if (list[8] != null) {
+      ret.push({
+        name: 'TOP 9',
+        x: 30.9,
+        y: -95.11,
+        duibi: list[8]
+      })
+    }
+    if (list[9] != null) {
+      ret.push({
+        name: 'TOP 10',
+        x: 80.9,
+        y: -58.78,
+        duibi: list[9]
+      })
+    }
+    return ret
+  }
+  static GetPKLinks(list) {
+    var ret = []
+    for (var i = 0; i <= 9; i++) {
+      if (list[i] != null) {
+        var k = i + 1
+        ret.push({
+          source: 'TOP ' + k.toString(),
+          target: '本校',
+          lineStyle: {
+            curveness: 0.15,
+            color: '#3358fb',
+            width: 4
+          },
+          label: {
+            show: true,
+            formatter: list[i].ordershop
+          }
+        })
+        ret.push({
+          source: '本校',
+          target: 'TOP ' + k.toString(),
+          lineStyle: {
+            curveness: 0.15,
+            color: '#B1AE58'
+          },
+          label: {
+            show: true,
+            formatter: list[i].bendian
+          }
+        })
+      }
+    }
+    return ret
+  }
 }

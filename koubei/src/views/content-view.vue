@@ -11,8 +11,8 @@ const route = useRoute()
 const router = useRouter()
 const uploadpath = Config.UploadPath
 const resource = ref(null)
-const onNavClickLeft=()=>{
-  router.back();
+const onNavClickLeft = () => {
+  router.back()
 }
 HttpHelper.Post('inst/resources').then((data) => {
   resource.value = data
@@ -23,29 +23,24 @@ HttpHelper.Post('inst/info').then((data) => {
 })
 var keycode = route.params.keycode
 var info = ref({})
-HttpHelper.Post('content/get',{keycode}).then((data) => {
-  route.meta.title=data.name;
-  data.content = Utils.HtmlDecode(data.content);
+HttpHelper.Post('content/get', { keycode }).then((data) => {
+  route.meta.title = data.name
+  data.content = Utils.HtmlDecode(data.content)
   info.value = data
-  
 })
 </script>
 <template>
   <div>
-    <div v-if="resource != null && inst != null && info!=null">
-      <van-nav-bar
-      :title="info.name"
-        left-arrow
-        fixed
-        @click-left="onNavClickLeft"
-      />
+    <div v-if="resource != null && inst != null && info != null">
+      <van-nav-bar :title="info.name" left-arrow fixed @click-left="onNavClickLeft" />
       <div class="min-wh100 bg-primary">
         <div class="flex-row">
           <div class="flex-1"></div>
           <div class="section-block">
-            <div class="white-block section-padding bg-white margin-top-49" v-html="info.content">
-              
-            </div>
+            <div
+              class="white-block section-padding bg-white margin-top-49"
+              v-html="info.content"
+            ></div>
           </div>
           <div class="flex-1"></div>
         </div>
@@ -54,7 +49,6 @@ HttpHelper.Post('content/get',{keycode}).then((data) => {
   </div>
 </template>
 <style scoped>
-
 .white-block {
   border-radius: 18px;
   min-height: 400px;

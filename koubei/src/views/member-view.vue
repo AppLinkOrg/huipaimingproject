@@ -10,8 +10,8 @@ const route = useRoute()
 const router = useRouter()
 const uploadpath = Config.UploadPath
 const resource = ref(null)
-const onNavClickLeft=()=>{
-  router.back();
+const onNavClickLeft = () => {
+  router.back()
 }
 HttpHelper.Post('inst/resources').then((data) => {
   resource.value = data
@@ -22,36 +22,31 @@ HttpHelper.Post('inst/info').then((data) => {
 })
 const member = ref(null)
 HttpHelper.Post('member/info').then((data) => {
-  if(data==null){
-    router.push("/login")
-    return;
+  if (data == null) {
+    router.push('/login')
+    return
   }
   member.value = data
 })
 const isdianping = ref(true)
-const dianpinglist=ref([])
+const dianpinglist = ref([])
 HttpHelper.Post('member/dianpinglist').then((data) => {
-  dianpinglist.value=data;
-});
+  dianpinglist.value = data
+})
 
-const searchlist=ref([])
+const searchlist = ref([])
 HttpHelper.Post('member/searchrecordlist').then((data) => {
-  searchlist.value=data;
-});
+  searchlist.value = data
+})
 
 const logout = () => {
-  localStorage.removeItem("token");
+  localStorage.removeItem('token')
   router.push('/')
 }
 </script>
 <template>
   <div>
-    <van-nav-bar
-      title="个人中心"
-        left-arrow
-        fixed
-        @click-left="onNavClickLeft"
-      />
+    <van-nav-bar title="个人中心" left-arrow fixed @click-left="onNavClickLeft" />
     <div v-if="resource != null && inst != null">
       <div class="bg-gray min-wh100">
         <div class="bg-primary">
@@ -106,8 +101,18 @@ const logout = () => {
                   <div class="flex-row flex-center fc-black">
                     <div class="flex-1 margin-right-15">
                       <div class="f-13 fw-500">{{ item.time_formatting }}</div>
-                      <div class="f-15 fw-bold margin-top-18" :class="{'fc-primary':item.num1==1}">{{ item.r_daxue1_name }}</div>
-                      <div class="f-15 fw-bold margin-top-18" :class="{'fc-primary':item.num2==1}">{{ item.r_daxue_name }}</div>
+                      <div
+                        class="f-15 fw-bold margin-top-18"
+                        :class="{ 'fc-primary': item.num1 == 1 }"
+                      >
+                        {{ item.r_daxue1_name }}
+                      </div>
+                      <div
+                        class="f-15 fw-bold margin-top-18"
+                        :class="{ 'fc-primary': item.num2 == 1 }"
+                      >
+                        {{ item.r_daxue_name }}
+                      </div>
                     </div>
                     <div>
                       <img class="wh-30" :src="uploadpath + 'resource/' + resource.vs" />
@@ -123,7 +128,9 @@ const logout = () => {
                     class="flex-row flex-center"
                     :class="{ item: index + 1 < searchlist.length }"
                   >
-                    <div class="flex-1 margin-right-15 fc-black f-15 fw-bold">{{ item.r_daxue_name }}</div>
+                    <div class="flex-1 margin-right-15 fc-black f-15 fw-bold">
+                      {{ item.r_daxue_name }}
+                    </div>
                     <div class="fc-black f-13 fw-400">{{ item.op_time_formatting }}</div>
                   </div>
                 </block>

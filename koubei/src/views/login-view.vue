@@ -6,78 +6,80 @@ import Config from '../httphelper/Config'
 import { HttpHelper } from '../httphelper/HttpHelper'
 import Line from '../components/line.vue'
 import DragVerify from '../components/drag-verify.vue'
-import { showToast } from 'vant';
+import { showToast } from 'vant'
 import { onMounted } from 'vue'
 
 const route = useRoute()
 const router = useRouter()
 const uploadpath = Config.UploadPath
 const resource = ref(null)
-const mobile = ref(localStorage.getItem("lastmobile"))
+const mobile = ref(localStorage.getItem('lastmobile'))
 const verifycode = ref('')
 const loading = ref(false)
 const checked = ref(false)
-const verifycodereminder=ref(0);
+const verifycodereminder = ref(0)
 HttpHelper.Post('inst/resources').then((data) => {
   resource.value = data
 })
-const showverify=ref(false)
+const showverify = ref(false)
 const sendverifycode = () => {
-  const regex = /^1\d{10}$/;
-  if(regex.test(mobile.value)==false){
-    showToast('手机号码不正确，请重新输入');
-    return 
+  const regex = /^1\d{10}$/
+  if (regex.test(mobile.value) == false) {
+    showToast('手机号码不正确，请重新输入')
+    return
   }
-  showverify.value=true;
+  showverify.value = true
 }
-onMounted(()=>{
-  route.meta.title="用户登录";
-  const timestamp = Date.now()/1000;
-  const lastsent = parseInt( localStorage.getItem("lastsent"));
-  console.log("lastsent",timestamp,lastsent,timestamp-lastsent);
-  if(timestamp-lastsent<60){
-    verifycodereminder.value=60-parseInt( timestamp-lastsent);
+onMounted(() => {
+  route.meta.title = '用户登录'
+  const timestamp = Date.now() / 1000
+  const lastsent = parseInt(localStorage.getItem('lastsent'))
+  console.log('lastsent', timestamp, lastsent, timestamp - lastsent)
+  if (timestamp - lastsent < 60) {
+    verifycodereminder.value = 60 - parseInt(timestamp - lastsent)
   }
-  setInterval(()=>{
-    if(verifycodereminder.value>0){
-      verifycodereminder.value=verifycodereminder.value-1;
+  setInterval(() => {
+    if (verifycodereminder.value > 0) {
+      verifycodereminder.value = verifycodereminder.value - 1
     }
-  },1000);
-});
-const handlePassed=()=>{
-  showverify.value=false;
-  
+  }, 1000)
+})
+const handlePassed = () => {
+  showverify.value = false
+
   loading.value = true
   setTimeout(() => {
     loading.value = false
-    HttpHelper.Post('member/sendregverifycode',{mobile:mobile.value}).then((data) => {
-      verifycodereminder.value=60;
-      showToast('验证码已发送');
+    HttpHelper.Post('member/sendregverifycode', { mobile: mobile.value }).then((data) => {
+      verifycodereminder.value = 60
+      showToast('验证码已发送')
     })
   }, 1000)
-  localStorage.setItem("lastsent",Date.now()/1000);
-};
-const handleFailed=()=>{
-  showverify.value=false;
-};
+  localStorage.setItem('lastsent', Date.now() / 1000)
+}
+const handleFailed = () => {
+  showverify.value = false
+}
 const login = () => {
-  if(checked.value==false){
-    showToast('请勾选统一用户协议和隐私政策');
+  if (checked.value == false) {
+    showToast('请勾选统一用户协议和隐私政策')
     return
   }
   loading.value = true
   setTimeout(() => {
     loading.value = false
-    HttpHelper.Post('member/login',{mobile:mobile.value,verifycode:verifycode.value}).then((data) => {
-      if(data.code==0){
-        showToast('登录成功，立刻跳转');
-        localStorage.setItem("lastmobile",mobile.value)
-        localStorage.setItem("token",data.return)
-        router.push('/home')
-      }else{
-        showToast(data.return);
+    HttpHelper.Post('member/login', { mobile: mobile.value, verifycode: verifycode.value }).then(
+      (data) => {
+        if (data.code == 0) {
+          showToast('登录成功，立刻跳转')
+          localStorage.setItem('lastmobile', mobile.value)
+          localStorage.setItem('token', data.return)
+          router.push('/home')
+        } else {
+          showToast(data.return)
+        }
       }
-    })
+    )
   }, 1000)
 }
 </script>
@@ -88,8 +90,8 @@ const login = () => {
         <van-loading size="50" />
       </div>
     </van-overlay>
-    <van-overlay :show="showverify" >
-      <div class="overlay-wrapper" >
+    <van-overlay :show="showverify">
+      <div class="overlay-wrapper">
         <DragVerify v-if="showverify" @success="handlePassed" @fail="handleFailed"></DragVerify>
       </div>
     </van-overlay>
@@ -120,8 +122,12 @@ const login = () => {
               placeholder="请输入验证码"
             />
             <div class="flex-1"></div>
-            <span v-if="verifycodereminder>0" class="fc-primary fc-gray f-12">({{ verifycodereminder }}s)</span>
-            <span v-if="verifycodereminder<=0" class="fc-primary f-12" @click="sendverifycode">获取验证码</span>
+            <span v-if="verifycodereminder > 0" class="fc-primary fc-gray f-12"
+              >({{ verifycodereminder }}s)</span
+            >
+            <span v-if="verifycodereminder <= 0" class="fc-primary f-12" @click="sendverifycode"
+              >获取验证码</span
+            >
           </div>
           <Line></Line>
           <div class="margin-top-49"></div>
@@ -137,7 +143,8 @@ const login = () => {
         <div class="flex-1"></div>
         <van-checkbox v-model="checked" :checked-color="Config.PrimaryColor"></van-checkbox>
         <div class="f-12 margin-left-5">
-          我已阅读<router-link to="/context/useragreement" class="fc-primary">《用户协议》</router-link
+          我已阅读<router-link to="/context/useragreement" class="fc-primary"
+            >《用户协议》</router-link
           >和<router-link class="fc-primary" to="/context/privacy">《隐私政策》</router-link
           >并理解相关条款内容
         </div>
