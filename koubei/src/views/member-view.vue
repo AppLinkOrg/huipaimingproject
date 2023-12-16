@@ -59,7 +59,7 @@ const logout = () => {
                   <div class="f-18 fw-bold fc-white">{{ member.mobile }}</div>
                   <div class="flex-row margin-top-11">
                     <div class="databox fc-white fw-400 f-13 flex-row flex-center margin-right-15">
-                      实力: {{ member.score }}
+                      积分: {{ member.jifen }}
                     </div>
                     <div class="member fc-white fw-400 f-13 flex-row flex-center">
                       信用: {{ member.credit }}

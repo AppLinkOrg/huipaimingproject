@@ -138,6 +138,7 @@ const login = () => {
         <div class="flex-1"></div>
       </div>
     </div>
+    <div class="pdd"></div>
     <div class="bottom-block">
       <div class="flex-row flex-center">
         <div class="flex-1"></div>
@@ -162,5 +163,8 @@ const login = () => {
   margin-top: 141px;
   margin-bottom: 28px;
   width: 124px;
+}
+.pdd{
+  height: 200px;
 }
 </style>

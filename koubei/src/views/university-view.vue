@@ -108,7 +108,18 @@ HttpHelper.Post('daxue/top', { id: id }).then((list) => {
   var links = Utils.GetPKLinks(list)
   option2.value = {
     title: {},
-    tooltip: {},
+    tooltip: {
+      formatter: function(params) {
+        console.log("formatter",params)
+        return (
+          params.data.duibi.duibi.name
+          +"<div style='width:100px;white-space:normal !important;'><p style='width:100px;word-wrap: break-word;overflow-wrap: break-word;'>"+params.data.duibi.duibi.name1+"</p>"
+          +"<p style='width:100px;word-wrap: break-word;overflow-wrap: break-word;'>当前排名："+params.data.duibi.duibi.ranking+"</p>"
+          +"<p style='word-wrap: break-word;overflow-wrap: break-word;'>投票数："+params.data.duibi.ordershop+"</p>"
+          +"<p style='word-wrap: break-word;overflow-wrap: break-word;'>本校："+params.data.duibi.bendian+"</p></div>"
+        );
+      }
+    },
     animationDurationUpdate: 1500,
     animationEasingUpdate: 'quinticInOut',
     series: [
@@ -130,7 +141,7 @@ HttpHelper.Post('daxue/top', { id: id }).then((list) => {
           normal: {
             color: function (params) {
               if (params.name == '本校') {
-                return '#B1AE58'
+                return '#F7AF12'
               } else if (
                 list[10].ranking != 0 &&
                 list[10].ranking == list[params.dataIndex - 1].id
@@ -138,7 +149,7 @@ HttpHelper.Post('daxue/top', { id: id }).then((list) => {
                 // console.log(list);
                 return '#999999'
               } else {
-                return '#3358fb'
+                return '#048695'
               }
             }
           }
@@ -270,7 +281,16 @@ const addsearchresult = (duibi_id) => {
       </van-popup>
       <van-overlay :show="showInfo" @click="closeShowInfo()">
         <div class="wrapper">
-          <div class="block" v-html="info.content"></div>
+          <div class="infoblock">
+            <div class="f-19 fw-bold">{{ info.name }}</div>
+            <div class="f-19 margin-top-14">{{ info.name1 }}</div>
+            <div class="f-13 margin-top-14">
+              区域/大洲：{{ info.diqu_name }}
+            </div>
+            <div class="f-13 margin-top-14">
+              国家/地区：{{ info.guojia_name }}
+            </div>
+          </div>
         </div>
       </van-overlay>
       <div class="min-wh100 bg-primary">
@@ -523,5 +543,11 @@ input {
 }
 input::placeholder {
   font-size: 14px; /* 可以根据需要调整字体大小 */
+}
+.infoblock {
+  min-width: 237px;
+  padding: 27px 15px;
+  background: #ffffff;
+  border-radius: 17px;
 }
 </style>

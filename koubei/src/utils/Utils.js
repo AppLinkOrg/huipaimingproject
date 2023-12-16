@@ -152,7 +152,7 @@ export class Utils {
           target: '本校',
           lineStyle: {
             curveness: 0.15,
-            color: '#3358fb',
+            color: '#048695',
             width: 4
           },
           label: {
@@ -165,7 +165,7 @@ export class Utils {
           target: 'TOP ' + k.toString(),
           lineStyle: {
             curveness: 0.15,
-            color: '#B1AE58'
+            color: '#F7AF12'
           },
           label: {
             show: true,
