@@ -30,6 +30,12 @@ const gotoKoubei = () => {
 onMounted(() => {
   route.meta.title = '汇排名'
 })
+const gotoGuonei=()=>{
+  window.location.href=inst.value.guoneiurl
+}
+const gotoGuoji=()=>{
+  window.location.href=inst.value.guojiurl
+}
 </script>
 <template>
   <div>
@@ -42,11 +48,11 @@ onMounted(() => {
       <div class="flex-row">
         <div class="flex-1"></div>
         <div>
-          <div class="card-section margin-top-49">
+          <div class="card-section margin-top-49"   @click="gotoGuonei()">
             <div class="fw-500 f-29 fc-white">国内版</div>
             <div class="fw-400 f-22 fc-white margin-top-14">Domestic Version</div>
           </div>
-          <div class="card-section margin-top-22">
+          <div class="card-section margin-top-22"  @click="gotoGuoji()">
             <div class="fw-500 f-29 fc-white">国际版</div>
             <div class="fw-400 f-22 fc-white margin-top-14">International Version</div>
           </div>

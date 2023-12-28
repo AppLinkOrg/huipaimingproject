@@ -22,6 +22,20 @@ export class HttpHelper {
             return res.data;
         });
     }
+    static PostKoubei(url, data) {
+        var fullurl = Config.ApiUrlKoubei + url;
+        var token = window.localStorage.getItem("koubeitoken");
+        return Axios.post(fullurl, HttpHelper.ParamUrlencoded(data), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Token': token,
+                'UNICODE': "koubei"
+            }
+        }).then((res) => {
+            console.log(url, data, res.data);
+            return res.data;
+        });
+    }
 
     static UploadImage(module, completecallback) {
 

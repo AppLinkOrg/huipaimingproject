@@ -8,6 +8,7 @@ export default {
     ApiUrl: "https://api2.52ranking.com/api/",
     UploadPath: "https://huipaimingchina-1301290517.cos.ap-guangzhou.myqcloud.com/",
     FileUploadAPI: "https://api2.52ranking.com/fileupload",
+    ApiUrlKoubei: 'https://cmsdev.app-link.org/alucard263096/huipaimingkoube/api/',
 
 
 }

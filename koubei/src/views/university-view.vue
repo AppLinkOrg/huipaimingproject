@@ -284,11 +284,17 @@ const addsearchresult = (duibi_id) => {
           <div class="infoblock">
             <div class="f-19 fw-bold">{{ info.name }}</div>
             <div class="f-19 margin-top-14">{{ info.name1 }}</div>
-            <div class="f-13 margin-top-14">
+            <div class="f-13 margin-top-14" v-if="info.diqu_name!=''">
               区域/大洲：{{ info.diqu_name }}
             </div>
-            <div class="f-13 margin-top-14">
+            <div class="f-13 margin-top-14" v-if="info.guojia_name!=''">
               国家/地区：{{ info.guojia_name }}
+            </div>
+            <div class="f-13 margin-top-14" v-if="info.quyu_name!=''">
+              区域：{{ info.province_name }}
+            </div>
+            <div class="f-13 margin-top-14" v-if="info.province_name!=''">
+              省份：{{ info.province_name }}
             </div>
           </div>
         </div>

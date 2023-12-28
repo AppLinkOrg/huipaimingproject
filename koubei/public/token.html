@@ -1,0 +1,15 @@
+<script>
+    // 监听来自主页面的消息
+    window.addEventListener('message', function(event) {
+      // 确保消息来源是主页面，并执行相应的处理
+      if (event.source === window.parent) {
+        var receivedMessage = event.data;
+        console.log('Received message from Main Page:', receivedMessage);
+  
+        // 示例：向主页面发送响应消息
+        var token = window.localStorage.getItem('token')
+        var responseMessage = token;
+        window.parent.postMessage(responseMessage, '*');
+      }
+    });
+  </script>

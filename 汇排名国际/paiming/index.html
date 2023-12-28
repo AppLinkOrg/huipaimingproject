@@ -17,6 +17,39 @@
 <body>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
+    <iframe src="http://localhost:5173/token.html" id="myIframe" width="0" height="0" ></iframe>
 </body>
+<script>
+    // 获取iframe元素
+    var iframe = document.getElementById('myIframe');
+    if(window.location.href.indexOf("localhost")>0){
+        iframe.src="http://localhost:5173/token.html";
+    }else{
+        iframe.src="http://uat11.helpfooter.com/token.html";
+    }
 
+    iframe.addEventListener('load', function() {
+        sendMessageToIframe()
+    });
+  
+    // 在主页面中发送消息到iframe
+    function sendMessageToIframe() {
+      var message = 'Hello from Main Page!';
+      // 向iframe发送消息
+      iframe.contentWindow.postMessage(message, '*'); // '*' 表示允许任何源访问
+    }
+  
+    // 监听来自iframe的消息
+    window.addEventListener('message', function(event) {
+      // 确保消息来源是iframe，并执行相应的处理
+      if (event.source === iframe.contentWindow) {
+        var receivedMessage = event.data;
+        console.log("receivedMessage",receivedMessage)
+        window.localStorage.setItem("koubeitoken",receivedMessage)
+      }
+    });
+  
+    
+  </script>
+  
 </html>

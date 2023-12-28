@@ -4,6 +4,7 @@ import { ref } from "@vue/reactivity";
 import { HttpHelper } from "../HttpHelper";
 import { useRouter, useRoute } from "vue-router";
 import { Image as VanImage } from "vant";
+import { Dialog } from 'vant';
 
 let page = ref({});
 let router = useRouter();
@@ -43,17 +44,36 @@ let onClickButton = (flag = false) => {
     }
   });
 };
+var aaa=false;
 let tiaozhuan = (path, param = {}) => {
-  if (path == "/paiming") {
-    HttpHelper.Post(
-      "daxue/addremen",
-      {
-        name: param.id,
-      },
-      (ret) => {}
-    );
+  if(aaa==true){
+    return
   }
-  router.push({ path, query: param });
+  aaa=true;
+  HttpHelper.PostKoubei("member/info", {}).then((info) => {
+    aaa=false;
+    if(info==null||parseInt(info.jifen)<=0){
+      Dialog({
+        title: '提示',
+        message: '信用分不足，无法点评',
+        theme: 'round-button',
+        confirmButtonColor:"#048694 "
+      });
+      return
+    }
+    HttpHelper.PostKoubei("member/usejifen", {});
+
+    if (path == "/paiming") {
+      HttpHelper.Post(
+        "daxue/addremen",
+        {
+          name: param.id,
+        },
+        (ret) => {}
+      );
+    }
+    router.push({ path, query: param });
+  });
 };
 document.addEventListener("click", (e) => {
   let searchid = document.getElementById("searchid");

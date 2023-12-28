@@ -67,4 +67,7 @@ export class Utils {
             return "" + mile + "m";
         }
     }
+    static GetUserToken(){
+        
+    }
 }
