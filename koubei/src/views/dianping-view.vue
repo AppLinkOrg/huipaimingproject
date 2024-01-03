@@ -25,7 +25,7 @@ HttpHelper.Post('inst/info').then((data) => {
 
 const uinfo1 = ref(null)
 const uinfo2 = ref(null)
-const ux = ref(1)
+const ux = ref(-1)
 const clickUx = (x) => {
   ux.value = x
 }
@@ -52,7 +52,15 @@ const randomChange = () => {
 }
 randomChange()
 const show = ref(false)
+var firstclick=0;
 const toupiao = (uid) => {
+  var time=new Date().getTime();
+  console.log("toupiao",time);
+  if(time-firstclick>500){
+    ux.value=uid;
+    firstclick=time;
+    return;
+  }
   if (loading.value == true) {
     return
   }
@@ -66,12 +74,13 @@ const toupiao = (uid) => {
   }).then(() => {
     loading.value = false
     show.value = true
+    ux.value=-1;
   })
 }
 </script>
 <template>
   <div>
-    <van-nav-bar title="点评" left-arrow fixed @click-left="onNavClickLeft" />
+    <van-nav-bar title="投票" left-arrow fixed @click-left="onNavClickLeft" />
     <van-overlay :show="loading">
       <div class="overlay-wrapper">
         <van-loading size="50" />
@@ -88,7 +97,7 @@ const toupiao = (uid) => {
         <div class="text-center margin-top-49">
           <img class="success" :src="uploadpath + 'resource/' + resource.success" />
         </div>
-        <div class="text-center margin-top-22">点评成功</div>
+        <div class="text-center margin-top-22">投票成功</div>
       </van-dialog>
       <div class="min-wh100 bg-gray">
         <div class="flex-row">
@@ -102,17 +111,16 @@ const toupiao = (uid) => {
             <div class="flex-row flex-center">
               <div
                 class="universitybox bg-white"
-                :class="{ universitybox2: ux == 1 }"
-                @click="clickUx(1)"
-                @dblclick="toupiao(uinfo1.id)"
+                :class="{ universitybox2: uinfo1!=nunll&&ux == uinfo1.id }"
+                @click="toupiao(uinfo1.id)"
               >
                 <div class="flex-column flex-center" v-if="uinfo1 != null">
                   <div class="flex-1">
                     <img class="uni-logo" :src="uploadpath + 'daxue/' + uinfo1.logo" />
                   </div>
-                  <div class="flex-1 margin-left-15">
-                    <div class="f-18 fw-bold fc-black">{{ uinfo1.name }}</div>
-                    <div class="f-15 fw-40 margin-top-22 fc-black">{{ uinfo1.name1 }}</div>
+                  <div class="flex-1">
+                    <div class="f-13 fw-bold fc-black">{{ uinfo1.name }}</div>
+                    <div class="f-13 fw-40 margin-top-22 fc-black">{{ uinfo1.name1 }}</div>
                   </div>
                 </div>
               </div>
@@ -123,22 +131,27 @@ const toupiao = (uid) => {
               </div>
               <div
                 class="universitybox bg-white"
-                :class="{ universitybox2: ux == 2 }"
-                @click="clickUx(2)"
-                @dblclick="toupiao(uinfo2.id)"
+                :class="{ universitybox2: uinfo2!=nunll&&ux == uinfo2.id }"
+                @click="toupiao(uinfo2.id)"
               >
                 <div class="flex-column flex-center" v-if="uinfo2 != null">
                   <div class="flex-1">
                     <img class="uni-logo" :src="uploadpath + 'daxue/' + uinfo2.logo" />
                   </div>
-                  <div class="flex-1 margin-right-15">
-                    <div class="f-18 fw-bold fc-black">{{ uinfo2.name }}</div>
-                    <div class="f-15 fw-40 margin-top-22 fc-black">{{ uinfo2.name1 }}</div>
+                  <div class="flex-1">
+                    <div class="f-13 fw-bold fc-black">{{ uinfo2.name }}</div>
+                    <div class="f-13 fw-40 margin-top-22 fc-black">{{ uinfo2.name1 }}</div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="text-center fc-primary f-15 fw-500 margin-top-49">双击学校即可点赞</div>
+            <div class="caozuo margin-top-49">
+              <div class="flex-row flex-center">
+                <div class="shupie"></div>
+                <div class="margin-left-5  fc-primary f-18 fw-500 ">操作说明</div>
+              </div>
+              <div class="fc-primary f-13 fw-500 margin-top-22">双击校徽即可投票</div>
+            </div>
             <div class="flex-row flex-center margin-top-49">
               <div class="flex-1">
                 <van-button type="primary" block round :color="Config.PrimaryColor" @click="goBack"
@@ -209,5 +222,16 @@ const toupiao = (uid) => {
 }
 .success {
   width: 200px;
+}
+.caozuo{
+  padding: 20px;
+  text-align: left;
+  background: #fff;
+  border-radius: 15px;
+}
+.shupie{
+  background-color: #048695;
+  height: 20px;
+  width: 5px;
 }
 </style>

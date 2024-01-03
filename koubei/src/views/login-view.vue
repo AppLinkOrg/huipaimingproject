@@ -21,6 +21,10 @@ const verifycodereminder = ref(0)
 HttpHelper.Post('inst/resources').then((data) => {
   resource.value = data
 })
+const inst = ref(null)
+HttpHelper.Post('inst/info').then((data) => {
+  inst.value = data
+})
 const showverify = ref(false)
 const sendverifycode = () => {
   const regex = /^1\d{10}$/
@@ -74,7 +78,16 @@ const login = () => {
           showToast('登录成功，立刻跳转')
           localStorage.setItem('lastmobile', mobile.value)
           localStorage.setItem('token', data.return)
-          router.push('/home')
+          
+          if(window.location.href.indexOf("guoneiurl")>0){
+            //alert(inst.value.guoneiurl);
+            window.location.href=inst.value.guoneiurl
+          }else if(window.location.href.indexOf("guoneiurl")>0){
+            window.location.href=inst.value.guoneiurl
+          }else{
+            router.push('/home')
+          }
+          
         } else {
           showToast(data.return)
         }
@@ -156,11 +169,11 @@ const login = () => {
 </template>
 <style scoped>
 .input-mobile {
-  margin-top: 103px;
+  margin-top: 63px;
   margin-bottom: 18px;
 }
 .logo {
-  margin-top: 141px;
+  margin-top: 100px;
   margin-bottom: 28px;
   width: 124px;
 }

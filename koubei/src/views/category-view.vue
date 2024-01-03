@@ -31,10 +31,18 @@ onMounted(() => {
   route.meta.title = '汇排名'
 })
 const gotoGuonei=()=>{
-  window.location.href=inst.value.guoneiurl
+  if (member.value == null) {
+    router.push('/login?type=guoneiurl')
+  } else {
+    window.location.href=inst.value.guoneiurl
+  }
 }
 const gotoGuoji=()=>{
-  window.location.href=inst.value.guojiurl
+  if (member.value == null) {
+    router.push('/login?type=guojiurl')
+  } else {
+    window.location.href=inst.value.guojiurl
+  }
 }
 </script>
 <template>

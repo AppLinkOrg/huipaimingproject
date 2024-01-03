@@ -6,6 +6,7 @@ import { useRouter, useRoute } from "vue-router";
 import { Image as VanImage } from "vant";
 import { onMounted } from "vue";
 import { Dialog } from 'vant';
+import  catmem  from '../components/catmem.vue';
 
 let page = ref({});
 let router = useRouter();
@@ -181,7 +182,8 @@ let switchgj = () =>{
       </div>
     </div>
     <!-- <van-image @click="changelang(lang)" :src="page.uploadpath+'resource/'+(lang=='en'?page.Res.yingicon:page.Res.zhongicon)" class="langicon"></van-image> -->
-      <van-image @click="switchgj()" :src="page.uploadpath+'resource/'+(page.Res.switchgj)" class="islangicon"></van-image>
+      <!-- <van-image @click="switchgj()" :src="page.uploadpath+'resource/'+(page.Res.switchgj)" class="islangicon"></van-image> -->
+      <catmem></catmem>
   </div>
 </template>
 <style scoped>

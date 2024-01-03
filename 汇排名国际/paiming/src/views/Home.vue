@@ -5,6 +5,7 @@ import { HttpHelper } from "../HttpHelper";
 import { useRouter, useRoute } from "vue-router";
 import { Image as VanImage } from "vant";
 import { Dialog } from 'vant';
+import  catmem  from '../components/catmem.vue';
 
 let page = ref({});
 let router = useRouter();
@@ -180,7 +181,8 @@ let switchgn = () =>{
       </div>
     </div>
     <!-- <van-image @click="changelang(lang)" :src="page.uploadpath+'resource/'+(lang=='en'?page.Res.yingicon:page.Res.zhongicon)" class="langicon"></van-image> -->
-    <van-image @click="switchgn()" :src="page.uploadpath+'resource/'+(page.Res.switchgn)" class="islangicon"></van-image>
+    <!-- <van-image @click="switchgn()" :src="page.uploadpath+'resource/'+(page.Res.switchgn)" class="islangicon"></van-image> -->
+    <catmem></catmem>
   </div>
 </template>
 <style scoped>

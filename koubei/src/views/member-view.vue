@@ -5,6 +5,7 @@ import { ref, watch, defineProps, onMounted } from 'vue'
 import Config from '../httphelper/Config'
 import { HttpHelper } from '../httphelper/HttpHelper'
 import { VueEcharts } from 'vue3-echarts'
+import { Utils } from '../utils/Utils'
 
 const route = useRoute()
 const router = useRouter()
@@ -18,6 +19,7 @@ HttpHelper.Post('inst/resources').then((data) => {
 })
 const inst = ref(null)
 HttpHelper.Post('inst/info').then((data) => {
+  data.operator = Utils.HtmlDecode(data.operator)
   inst.value = data
 })
 const member = ref(null)
@@ -43,10 +45,21 @@ const logout = () => {
   localStorage.removeItem('token')
   router.push('/')
 }
+const showInfo=ref(false)
+const closeShowInfo=()=>{
+  showInfo.value=false;
+}
 </script>
 <template>
   <div>
     <van-nav-bar title="个人中心" left-arrow fixed @click-left="onNavClickLeft" />
+    <van-overlay :show="showInfo" @click="closeShowInfo()">
+        <div class="wrapper">
+          <div class="infoblock">
+            <div v-html="inst.operator"></div>
+          </div>
+        </div>
+      </van-overlay>
     <div v-if="resource != null && inst != null">
       <div class="bg-gray min-wh100">
         <div class="bg-primary">
@@ -54,9 +67,12 @@ const logout = () => {
             <div class="flex-1"></div>
             <div class="section-block margin-top-49">
               <div class="flex-row flex-center memberinfo">
-                <div class="memberphoto"></div>
+                <img class="memberphoto"  :src="uploadpath + 'inst/' + inst.logo" />
                 <div class="flex-1 margin-left-15 margin-right-15">
-                  <div class="f-18 fw-bold fc-white">{{ member.mobile }}</div>
+                  <div class="flex-row flex-center">
+                    <div class="f-18 fw-bold fc-white">{{ member.mobile }}</div>
+                    <img @click="showInfo=true" class="margin-left-15 wh-20" :src="uploadpath + 'resource/' + resource.info2" />
+                  </div>
                   <div class="flex-row margin-top-11">
                     <div class="databox fc-white fw-400 f-13 flex-row flex-center margin-right-15">
                       积分: {{ member.jifen }}
@@ -105,17 +121,19 @@ const logout = () => {
                         class="f-15 fw-bold margin-top-18"
                         :class="{ 'fc-primary': item.num1 == 1 }"
                       >
-                        {{ item.r_daxue1_name }}
+                        {{ item.r_daxue1_name }} 
+                        <img v-if="item.num1 == 1" class="wh-20" :src="uploadpath + 'resource/' + resource.thumb" />
                       </div>
                       <div
                         class="f-15 fw-bold margin-top-18"
                         :class="{ 'fc-primary': item.num2 == 1 }"
                       >
                         {{ item.r_daxue_name }}
+                        <img v-if="item.num2 == 1" class="wh-20" :src="uploadpath + 'resource/' + resource.thumb" />
                       </div>
                     </div>
                     <div>
-                      <img class="wh-30" :src="uploadpath + 'resource/' + resource.vs" />
+                      <img class="wh-50" :src="uploadpath + 'resource/' + resource.vs" />
                     </div>
                   </div>
                 </div>

@@ -1,3 +1,5 @@
+import Config from "../httphelper/Config"
+
 export class Utils {
   static ContentToHtml(str) {
     if (str == null) {
@@ -54,6 +56,8 @@ export class Utils {
     return arrstr.join(',')
   }
   static GetPKData(list) {
+    var width=50;
+    var height=50;
     var ret = []
     ret.push({
       name: '本校',
@@ -65,6 +69,11 @@ export class Utils {
         name: 'TOP 1',
         x: 100,
         y: 0,
+        symbol:"image://"+Config.UploadPath+"daxue/"+list[0].duibi.logo,
+        symbolSize: [width, height],
+        label: {
+          show: false
+        },
         duibi: list[0]
       })
     }
@@ -73,6 +82,11 @@ export class Utils {
         name: 'TOP 2',
         x: 80.9,
         y: 58.78,
+        symbol:"image://"+Config.UploadPath+"daxue/"+list[1].duibi.logo,
+        symbolSize: [width, height],
+        label: {
+          show: false
+        },
         duibi: list[1]
       })
     }
@@ -81,6 +95,11 @@ export class Utils {
         name: 'TOP 3',
         x: 30.9,
         y: 95.11,
+        symbol:"image://"+Config.UploadPath+"daxue/"+list[2].duibi.logo,
+        symbolSize: [width, height],
+        label: {
+          show: false
+        },
         duibi: list[2]
       })
     }
@@ -89,6 +108,11 @@ export class Utils {
         name: 'TOP 4',
         x: -30.9,
         y: 95.11,
+        symbol:"image://"+Config.UploadPath+"daxue/"+list[3].duibi.logo,
+        symbolSize: [width, height],
+        label: {
+          show: false
+        },
         duibi: list[3]
       })
     }
@@ -97,6 +121,11 @@ export class Utils {
         name: 'TOP 5',
         x: -80.9,
         y: 58.78,
+        symbol:"image://"+Config.UploadPath+"daxue/"+list[4].duibi.logo,
+        symbolSize: [width, height],
+        label: {
+          show: false
+        },
         duibi: list[4]
       })
     }
@@ -105,6 +134,11 @@ export class Utils {
         name: 'TOP 6',
         x: -100,
         y: 0,
+        symbol:"image://"+Config.UploadPath+"daxue/"+list[5].duibi.logo,
+        symbolSize: [width, height],
+        label: {
+          show: false
+        },
         duibi: list[5]
       })
     }
@@ -113,6 +147,11 @@ export class Utils {
         name: 'TOP 7',
         x: -80.9,
         y: -58.78,
+        symbol:"image://"+Config.UploadPath+"daxue/"+list[6].duibi.logo,
+        symbolSize: [width, height],
+        label: {
+          show: false
+        },
         duibi: list[6]
       })
     }
@@ -121,6 +160,11 @@ export class Utils {
         name: 'TOP 8',
         x: -30.9,
         y: -95.11,
+        symbol:"image://"+Config.UploadPath+"daxue/"+list[7].duibi.logo,
+        symbolSize: [width, height],
+        label: {
+          show: false
+        },
         duibi: list[7]
       })
     }
@@ -129,6 +173,11 @@ export class Utils {
         name: 'TOP 9',
         x: 30.9,
         y: -95.11,
+        symbol:"image://"+Config.UploadPath+"daxue/"+list[8].duibi.logo,
+        symbolSize: [width, height],
+        label: {
+          show: false
+        },
         duibi: list[8]
       })
     }
@@ -137,6 +186,11 @@ export class Utils {
         name: 'TOP 10',
         x: 80.9,
         y: -58.78,
+        symbol:"image://"+Config.UploadPath+"daxue/"+list[9].duibi.logo,
+        symbolSize: [width, height],
+        label: {
+          show: false
+        },
         duibi: list[9]
       })
     }
@@ -156,6 +210,7 @@ export class Utils {
             width: 4
           },
           label: {
+            offset:[0, 0],
             show: true,
             formatter: list[i].ordershop
           }
@@ -168,6 +223,7 @@ export class Utils {
             color: '#F7AF12'
           },
           label: {
+            offset:[0,0],
             show: true,
             formatter: list[i].bendian
           }

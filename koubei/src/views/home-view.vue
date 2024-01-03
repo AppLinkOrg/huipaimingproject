@@ -35,7 +35,18 @@ onMounted(() => {
   route.meta.title = '汇排名'
 })
 const gotoMember = () => {
-  router.push('/member')
+  if(window.location.href.indexOf("localhost")>-1){
+    window.location.href="http://localhost:5173/member";
+  }else{
+    window.location.href=inst.value.koubeiurl+"/member";
+  }
+}
+const gotoCategory = () => {
+  if(window.location.href.indexOf("localhost")>-1){
+    window.location.href="http://localhost:5173";
+  }else{
+    window.location.href=inst.value.koubeiurl;
+  }
 }
 const gotoDianping = () => {
   router.push('/dianping')
@@ -140,11 +151,11 @@ const addsearchresult = (daxue_id) => {
               class="wh-24 margin-left-15 margin-right-15"
               :src="uploadpath + 'resource/' + resource.thumb"
             />
-            <div class="f-18 fw-bold fc-white margin-left-10">我要点评</div>
+            <div class="f-18 fw-bold fc-white margin-left-10">我要投票</div>
             <div class="flex-1"></div>
-            <div class="f-11 fc-white fw-500 opacity">I want a review</div>
+            <div class="f-16 fc-white fw-500 opacity">Vote</div>
             <img
-              class="wh-10 margin-left-5 margin-right-15"
+              class="wh-20 margin-left-5 margin-right-15"
               :src="uploadpath + 'resource/' + resource.right"
             />
           </div>
@@ -188,6 +199,14 @@ const addsearchresult = (daxue_id) => {
               </RouterLink>
             </block>
           </div>
+        </div>
+        <div class="flex-1"></div>
+      </div>
+      <div class="category flex-row flex-center" @click="gotoCategory">
+        <div class="flex-1"></div>
+        <div class="text-center">
+          <img class="wh-20" :src="uploadpath + 'resource/' + resource.home" />
+          <div class="fc-primary fw-500 f-12">首页</div>
         </div>
         <div class="flex-1"></div>
       </div>
@@ -250,16 +269,7 @@ const addsearchresult = (daxue_id) => {
   color: #e54758;
 }
 .result-item {
-  margin-bottom: 30px;
-}
-.member {
-  width: 59px;
-  height: 59px;
-  background: #04869333;
-  border-radius: 50%;
-  position: fixed;
-  bottom: 80px; /* 距离底部的距离 */
-  right: 15px; /* 距离右侧的距离 */
+  margin-bottom: 20px;
 }
 
 .searchtipbox {
@@ -286,5 +296,25 @@ const addsearchresult = (daxue_id) => {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.category {
+  width: 59px;
+  height: 59px;
+  background: #04869333;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 150px; /* 距离底部的距离 */
+  right: 15px; /* 距离右侧的距离 */
+}
+
+.member {
+  width: 59px;
+  height: 59px;
+  background: #04869333;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 80px; /* 距离底部的距离 */
+  right: 15px; /* 距离右侧的距离 */
 }
 </style>

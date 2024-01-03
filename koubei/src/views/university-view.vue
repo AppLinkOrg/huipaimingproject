@@ -80,9 +80,7 @@ const loaddaxueyear = () => {
         },
         yAxis: {
           axisLabel: {
-            margin: 30,
-            fontSize: 16,
-            formatter: '#{value}'
+            formatter: '{value}'
           },
           type: 'value'
         },
@@ -115,8 +113,8 @@ HttpHelper.Post('daxue/top', { id: id }).then((list) => {
           params.data.duibi.duibi.name
           +"<div style='width:100px;white-space:normal !important;'><p style='width:100px;word-wrap: break-word;overflow-wrap: break-word;'>"+params.data.duibi.duibi.name1+"</p>"
           +"<p style='width:100px;word-wrap: break-word;overflow-wrap: break-word;'>当前排名："+params.data.duibi.duibi.ranking+"</p>"
-          +"<p style='word-wrap: break-word;overflow-wrap: break-word;'>投票数："+params.data.duibi.ordershop+"</p>"
-          +"<p style='word-wrap: break-word;overflow-wrap: break-word;'>本校："+params.data.duibi.bendian+"</p></div>"
+          //+"<p style='word-wrap: break-word;overflow-wrap: break-word;'>投票数："+params.data.duibi.ordershop+"</p>"
+          //+"<p style='word-wrap: break-word;overflow-wrap: break-word;'>本校："+params.data.duibi.bendian+"</p></div>"
         );
       }
     },
@@ -128,7 +126,7 @@ HttpHelper.Post('daxue/top', { id: id }).then((list) => {
         layout: 'none',
         symbolSize: 52,
         //设置缩放
-        roam: false,
+        roam: true,
         label: {
           show: true
         },
@@ -174,9 +172,10 @@ const clickoption2 = (aa) => {
   console.log('clickoption2', aa)
   if (aa.data.duibi != undefined) {
     console.log('duibi', aa.data.duibi.duibi)
-    duibi.value = aa.data.duibi.duibi
-    bendiannum.value = aa.data.duibi.bendian
-    ordershopnum.value = aa.data.duibi.ordershop
+    //duibi.value = aa.data.duibi.duibi
+    //bendiannum.value = aa.data.duibi.bendian
+    //ordershopnum.value = aa.data.duibi.ordershop
+    addsearchresult(aa.data.duibi.duibi.id);
   }
 }
 const isrank = ref(true)
@@ -349,7 +348,7 @@ const addsearchresult = (duibi_id) => {
               </div>
               <div class="section-padding" v-if="isrank == false">
                 <div id="timerank" ref="echart" v-if="option2 != null">
-                  <vue-echarts :option="option2" style="height: 300px" ref="chart2" />
+                  <vue-echarts :option="option2" style="height: 300px" ref="chart2" @click="clickoption2" />
                 </div>
                 <div id="timerank" ref="echart" v-if="option2 == null">暂无PK数据</div>
               </div>
@@ -498,20 +497,6 @@ const addsearchresult = (duibi_id) => {
   border-color: transparent black transparent transparent; /* 透明部分是三角形 */
   margin-left: 15px;
 }
-.wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.block {
-  padding: 20px;
-  width: 320px;
-  min-height: 450px;
-  background-color: #fff;
-  border-radius: 20px;
-}
 
 .searchtipbox {
   text-align: right;
@@ -549,11 +534,5 @@ input {
 }
 input::placeholder {
   font-size: 14px; /* 可以根据需要调整字体大小 */
-}
-.infoblock {
-  min-width: 237px;
-  padding: 27px 15px;
-  background: #ffffff;
-  border-radius: 17px;
 }
 </style>
