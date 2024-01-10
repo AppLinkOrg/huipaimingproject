@@ -21,28 +21,36 @@ HttpHelper.Post('member/info').then((data) => {
   member.value = data
 })
 const gotoKoubei = () => {
-  if (member.value == null) {
-    router.push('/login')
-  } else {
-    router.push('/home')
-  }
+  
+  HttpHelper.Post('member/info').then((data) => {
+    if(data!=null){
+      router.push('/home')
+    }else{
+      router.push('/login')
+    }
+  })
 }
 onMounted(() => {
   route.meta.title = '汇排名'
 })
 const gotoGuonei=()=>{
-  if (member.value == null) {
-    router.push('/login?type=guoneiurl')
-  } else {
-    window.location.href=inst.value.guoneiurl
-  }
+  HttpHelper.Post('member/info').then((data) => {
+    if(data!=null){
+      window.location.href=inst.value.guoneiurl+"/settoken.html?token="+data.token
+    }else{
+      router.push('/login?type=guoneiurl')
+    }
+  })
 }
 const gotoGuoji=()=>{
-  if (member.value == null) {
-    router.push('/login?type=guojiurl')
-  } else {
-    window.location.href=inst.value.guojiurl
-  }
+  
+  HttpHelper.Post('member/info').then((data) => {
+    if(data!=null){
+      window.location.href=inst.value.guojiurl+"/settoken.html?token="+data.token
+    }else{
+      router.push('/login?type=guojiurl')
+    }
+  })
 }
 </script>
 <template>
@@ -66,7 +74,7 @@ const gotoGuoji=()=>{
           </div>
           <div class="card-section margin-top-22" @click="gotoKoubei()">
             <div class="fw-500 f-29 fc-white">口碑版</div>
-            <div class="fw-400 f-22 fc-white margin-top-14">Word-of-mouth Version</div>
+            <div class="fw-400 f-22 fc-white margin-top-14">Reputation Version</div>
           </div>
         </div>
         <div class="flex-1"></div>

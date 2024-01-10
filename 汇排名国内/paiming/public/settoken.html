@@ -1,0 +1,22 @@
+<script>
+// 获取页面 URL 中的参数
+function getUrlParameter(name) {
+    name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+
+// 获取 token 参数的值
+var token = getUrlParameter('token');
+
+// 判断 token 的值是否不为空
+if (token !== '') {
+    // 将 token 存储到 localStorage 中
+    window.localStorage.setItem('koubeitoken', token);
+    console.log('Token stored successfully.');
+    window.location.href="/";
+} else {
+    console.log('Token is empty.');
+}
+</script>

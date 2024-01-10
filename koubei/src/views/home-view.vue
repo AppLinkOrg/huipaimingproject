@@ -90,78 +90,98 @@ const addsearchresult = (daxue_id) => {
   <div>
     <div class="hw100" v-if="showresultbox" @click="showresultbox = false"></div>
     <div v-if="resource != null && inst != null">
-      <div class="flex-row">
-        <div class="flex-1"></div>
-        <img class="banner" :src="uploadpath + 'resource/' + resource.banner" />
-        <div class="flex-1"></div>
-      </div>
-      <div class="flex-row">
-        <div class="flex-1"></div>
-        <div class="section-block">
-          <div class="searchbox flex-row flex-center" id="searchid">
-            <div class="flex-1">
-              <div class="flex-row flex-center">
-                <img
-                  class="search-icon wh-16 margin-left-15 margin-right-15"
-                  :src="uploadpath + 'resource/' + resource.search"
-                />
-                <input
-                  class="flex-1 margin-right-5 input"
-                  placeholder="请输入大学中文或英文名称"
-                  v-model="keyword"
-                  @update:model-value="search"
-                />
+      <div class="pk">
+        <div class="flex-row">
+          <div class="flex-1"></div>
+          <img class="banner" :src="uploadpath + 'resource/' + resource.banner" />
+          <div class="flex-1"></div>
+        </div>
+        <div class="flex-row">
+          <div class="flex-1"></div>
+          <div class="section-block">
+            <div class="searchbox flex-row flex-center" id="searchid">
+              <div class="flex-1">
+                <div class="flex-row flex-center">
+                  <img
+                    class="search-icon wh-16 margin-left-15 margin-right-15"
+                    :src="uploadpath + 'resource/' + resource.search"
+                  />
+                  <input
+                    class="flex-1 margin-right-5 input"
+                    placeholder="请输入大学中文或英文名称"
+                    v-model="keyword"
+                    @update:model-value="search"
+                  />
+                </div>
+              </div>
+              <div
+                class="searchboxbtn hp-100 flex-row flex-center bg-primary f-15 fc-white fw-500"
+                id="searchid4"
+                @click="search"
+              >
+                <div class="hp-100 flex-1"></div>
+                <div>搜索</div>
+                <div class="hp-100 flex-1"></div>
               </div>
             </div>
+
             <div
-              class="searchboxbtn hp-100 flex-row flex-center bg-primary f-15 fc-white fw-500"
-              id="searchid4"
-              @click="search"
+              class="searchtipbox"
+              v-if="showresultbox == true && searchlist.length > 0"
+              id="searchid2"
             >
-              <div class="hp-100 flex-1"></div>
-              <div>搜索</div>
-              <div class="hp-100 flex-1"></div>
+              <block v-for="(item, index) in searchlist" :key="index">
+                <RouterLink :to="'/university/' + item.id">
+                  <div class="padding-s" @click="addsearchresult(item.id)">{{ item.name }}</div>
+                </RouterLink>
+              </block>
             </div>
-          </div>
+            <div
+              class="searchtipbox"
+              v-if="showresultbox == true && searchlist.length == 0"
+              id="searchid3"
+            >
+              <div class="padding-s">没有找到相关大学数据</div>
+            </div>
 
-          <div
-            class="searchtipbox"
-            v-if="showresultbox == true && searchlist.length > 0"
-            id="searchid2"
-          >
-            <block v-for="(item, index) in searchlist" :key="index">
-              <RouterLink :to="'/university/' + item.id">
-                <div class="padding-s" @click="addsearchresult(item.id)">{{ item.name }}</div>
-              </RouterLink>
-            </block>
-          </div>
-          <div
-            class="searchtipbox"
-            v-if="showresultbox == true && searchlist.length == 0"
-            id="searchid3"
-          >
-            <div class="padding-s">没有找到相关大学数据</div>
-          </div>
-
-          <div
-            class="memberdianping bg-primary margin-top-14 flex-row flex-center"
-            @click="gotoDianping"
-          >
-            <img
-              class="wh-24 margin-left-15 margin-right-15"
-              :src="uploadpath + 'resource/' + resource.thumb"
-            />
-            <div class="f-18 fw-bold fc-white margin-left-10">我要投票</div>
-            <div class="flex-1"></div>
-            <div class="f-16 fc-white fw-500 opacity">Vote</div>
-            <img
-              class="wh-20 margin-left-5 margin-right-15"
-              :src="uploadpath + 'resource/' + resource.right"
-            />
-          </div>
-          <!-- <block v-if="searchlist.length">
+            <div
+              class="memberdianping bg-primary margin-top-14 flex-row flex-center"
+              @click="gotoDianping"
+            >
+              <img
+                class="wh-24 margin-left-15 margin-right-15"
+                :src="uploadpath + 'resource/' + resource.thumb"
+              />
+              <div class="f-18 fw-bold fc-white margin-left-10">我要投票</div>
+              <div class="flex-1"></div>
+              <div class="f-16 fc-white fw-500 opacity">Vote</div>
+              <img
+                class="wh-20 margin-left-5 margin-right-15"
+                :src="uploadpath + 'resource/' + resource.right"
+              />
+            </div>
+            <!-- <block v-if="searchlist.length">
+              <div class="hotsearch margin-top-14 flex-row flex-center">
+                <div class="f-18 fw-bold fc-black">搜索结果</div>
+                <img
+                  @click="iszh = !iszh"
+                  class="wh-30 margin-left-10"
+                  :src="uploadpath + 'resource/' + (iszh ? resource.zh : resource.en)"
+                />
+              </div>
+              <div class="margin-top-22">
+                <block v-for="(item, index) in searchlist" :key="index">
+                  <block v-if="index<30">
+                  <RouterLink :to="'/university/' + item.id" class="flex-row flex-center result-item">
+                    <div class="f-15 fw-500 fc-black" @click="addsearchresult(item.id)">{{ iszh ? item.name : item.name1 }}</div>
+                  </RouterLink>
+                </block>
+                </block>
+              </div>
+              <div class="margin-top-22 f-12 fw-500 fc-gray" v-if="searchlist.length>30">搜索结果仅显示前30条，请增加关键字以缩小搜索结果</div>
+            </block> -->
             <div class="hotsearch margin-top-14 flex-row flex-center">
-              <div class="f-18 fw-bold fc-black">搜索结果</div>
+              <div class="f-18 fw-bold fc-black">Top 10</div>
               <img
                 @click="iszh = !iszh"
                 class="wh-30 margin-left-10"
@@ -169,38 +189,20 @@ const addsearchresult = (daxue_id) => {
               />
             </div>
             <div class="margin-top-22">
-              <block v-for="(item, index) in searchlist" :key="index">
-                <block v-if="index<30">
-                <RouterLink :to="'/university/' + item.id" class="flex-row flex-center result-item">
-                  <div class="f-15 fw-500 fc-black" @click="addsearchresult(item.id)">{{ iszh ? item.name : item.name1 }}</div>
+              <block v-for="(item, index) in list" :key="index">
+                <RouterLink :to="'/university/' + item.name" class="flex-row flex-center result-item">
+                  <div class="f-13 no" :class="{ is123: index < 3 ? true : false }">
+                    {{ index + 1 }}
+                  </div>
+                  <div class="f-13 fc-black">
+                    {{ iszh ? item.r_name_name : item.r_name_name1 }}
+                  </div>
                 </RouterLink>
-               </block>
               </block>
             </div>
-            <div class="margin-top-22 f-12 fw-500 fc-gray" v-if="searchlist.length>30">搜索结果仅显示前30条，请增加关键字以缩小搜索结果</div>
-          </block> -->
-          <div class="hotsearch margin-top-14 flex-row flex-center">
-            <div class="f-18 fw-bold fc-black">Top 10</div>
-            <img
-              @click="iszh = !iszh"
-              class="wh-30 margin-left-10"
-              :src="uploadpath + 'resource/' + (iszh ? resource.zh : resource.en)"
-            />
           </div>
-          <div class="margin-top-22">
-            <block v-for="(item, index) in list" :key="index">
-              <RouterLink :to="'/university/' + item.name" class="flex-row flex-center result-item">
-                <div class="f-16 fw-bold no" :class="{ is123: index < 3 ? true : false }">
-                  {{ index + 1 }}
-                </div>
-                <div class="f-15 fw-500 fc-black">
-                  {{ iszh ? item.r_name_name : item.r_name_name1 }}
-                </div>
-              </RouterLink>
-            </block>
-          </div>
+          <div class="flex-1"></div>
         </div>
-        <div class="flex-1"></div>
       </div>
       <div class="category flex-row flex-center" @click="gotoCategory">
         <div class="flex-1"></div>
@@ -239,7 +241,7 @@ const addsearchresult = (daxue_id) => {
 </template>
 <style scoped>
 .banner {
-  margin-top: 86px;
+  margin-top: 26px;
   width: 294px;
 }
 .searchbox {
@@ -316,5 +318,8 @@ const addsearchresult = (daxue_id) => {
   position: fixed;
   bottom: 80px; /* 距离底部的距离 */
   right: 15px; /* 距离右侧的距离 */
+}
+.pk {
+  min-height: calc( 100vh - 62px );
 }
 </style>

@@ -299,7 +299,7 @@ const addsearchresult = (duibi_id) => {
         </div>
       </van-overlay>
       <div class="min-wh100 bg-primary">
-        <div class="flex-row">
+        <div class="flex-row pk">
           <div class="flex-1"></div>
           <div class="section-block">
             <div class="white-block section-padding bg-white margin-top-49">
@@ -343,7 +343,7 @@ const addsearchresult = (duibi_id) => {
                     >
                     <div class="flex-1"></div>
                   </div>
-                  <vue-echarts :option="option" style="height: 500px" ref="chart" />
+                  <vue-echarts :option="option" style="height: 450px" ref="chart" />
                 </div>
               </div>
               <div class="section-padding" v-if="isrank == false">
@@ -358,10 +358,11 @@ const addsearchresult = (duibi_id) => {
               v-if="isrank == false && option2 != null"
             >
               <div class="flex-row flex-center">
-                <div class="flex-1 f-18 fc-black fw-bold">{{ info.name }}</div>
+                <div class="flex-1 f-12 fc-primary  fc-black fw-bold margin-right-15 text-center">{{ info.name }}</div>
                 <div class="vs">VS</div>
-                <div class="flex-1 f-18 fc-primary fw-bold text-right">
+                <div class="flex-1 f-18 fc-primary fw-bold text-right margin-left-15">
                   <input
+                    class="f-12"
                     placeholder="请输入学校名字"
                     v-model="keyword"
                     @update:model-value="search"
@@ -418,7 +419,6 @@ const addsearchresult = (duibi_id) => {
           </div>
           <div class="flex-1"></div>
         </div>
-        <div class="last-space"></div>
         <div class="bottom-block fc-white bg-primary">
           <div class="flex-row flex-center">
             <div class="flex-1"></div>
@@ -529,10 +529,11 @@ input {
   width: 100%;
   text-align: right;
   text-align: right;
-  border: none; /* 移除边框样式 */
-  outline: none; /* 移除默认的轮廓样式 */
 }
 input::placeholder {
   font-size: 14px; /* 可以根据需要调整字体大小 */
+}
+.pk {
+  min-height: calc( 100vh - 62px );
 }
 </style>

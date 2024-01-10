@@ -42,12 +42,20 @@ let getyear = () => {
   let date = new Date();
   let nowYear = date.getFullYear();
   HttpHelper.Post("inst/yearlist", {}).then((yearlist) => {
+    var kva=false;
     for (let item of yearlist) {
       if (nowYear == item.name) {
         yearname.value = item.name;
         yearid.value = item.id;
+        kva=true;
       }
       item.text = item.name;
+    }
+    if(kva==false){
+      if(yearlist.length>0){
+        yearname.value = yearlist[0].name;
+        yearid.value = yearlist[0].id;
+      }
     }
 
     columns.value = yearlist;

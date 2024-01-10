@@ -45,6 +45,10 @@ let onClickButton = (flag = false) => {
     }
   });
 };
+var instinfokoubei=null;
+HttpHelper.PostKoubei("inst/info", {}).then((data) => {
+  instinfokoubei=data;
+});
 var aaa=false;
 let tiaozhuan = (path, param = {}) => {
   if(aaa==true){
@@ -56,7 +60,7 @@ let tiaozhuan = (path, param = {}) => {
     if(info==null||parseInt(info.jifen)<=0){
       Dialog({
         title: '提示',
-        message: '信用分不足，无法点评',
+        message: instinfokoubei.tips,
         theme: 'round-button',
         confirmButtonColor:"#048694 "
       });

@@ -157,10 +157,6 @@
   background-color: #048695;
 }
 .bottom-block {
-  width: 100vw;
-  position: fixed;
-  left: 0;
-  bottom: 0px;
   margin-bottom: 14px;
 }
 .wh-16 {
@@ -200,6 +196,3 @@
   min-height: 100vh;
 }
 
-.last-space {
-  height: 100px;
-}

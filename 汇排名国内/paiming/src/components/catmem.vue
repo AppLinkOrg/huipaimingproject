@@ -33,16 +33,24 @@ const gotoCategory = () => {
     <div class="category flex-row flex-center" @click="gotoCategory">
         <div class="flex-1"></div>
         <div class="text-center">
-          <img class="wh-20" :src="uploadpath + 'resource/' + resource.home" />
-          <div class="fc-primary fw-500 f-12">首页</div>
+          <div class="flex-row">
+            <div class="flex-1"></div>
+            <img class="wh-20" :src="uploadpath + 'resource/' + resource.home" />
+            <div class="flex-1"></div>
+          </div>
+          <div class="fc-primary fw-500 f-12 mp">首页</div>
         </div>
         <div class="flex-1"></div>
       </div>
       <div class="member  flex-row flex-center" @click="gotoMember">
         <div class="flex-1"></div>
-        <div class="text-center">
-          <img class="wh-20" :src="uploadpath + 'resource/' + resource.member" />
-          <div class="fc-primary fw-500 f-12">我的</div>
+        <div>
+          <div class="flex-row">
+            <div class="flex-1"></div>
+            <img class="wh-20" :src="uploadpath + 'resource/' + resource.member" />
+            <div class="flex-1"></div>
+          </div>
+          <div class="fc-primary text-center fw-500 f-12 mp">我的</div>
         </div>
         <div class="flex-1"></div>
       </div>    
@@ -82,5 +90,11 @@ const gotoCategory = () => {
 .f-12 {
   font-size: 12px;
   line-height: 12px;
+}
+.fc-primary{
+  color:#048693;
+}
+.mp{
+  margin-top: 5px;
 }
 </style>

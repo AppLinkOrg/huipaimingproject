@@ -81,9 +81,9 @@ const login = () => {
           
           if(window.location.href.indexOf("guoneiurl")>0){
             //alert(inst.value.guoneiurl);
-            window.location.href=inst.value.guoneiurl
+            window.location.href=inst.value.guoneiurl+"/settoken.html?token="+data.return
           }else if(window.location.href.indexOf("guoneiurl")>0){
-            window.location.href=inst.value.guoneiurl
+            window.location.href=inst.value.guoneiurl+"/settoken.html?token="+data.return
           }else{
             router.push('/home')
           }
@@ -109,49 +109,50 @@ const login = () => {
       </div>
     </van-overlay>
     <div v-if="resource != null">
-      <div class="w-100 bg">
+      <div class="pk">
+        <div class="w-100 bg " >
+          <div class="flex-row">
+            <div class="flex-1"></div>
+            <img class="logo" :src="uploadpath + 'resource/' + resource.logo" />
+            <div class="flex-1"></div>
+          </div>
+        </div>
         <div class="flex-row">
           <div class="flex-1"></div>
-          <img class="logo" :src="uploadpath + 'resource/' + resource.logo" />
+          <div class="section-block">
+            <div>
+              <input
+                class="input wp-100 f-18 fc-black input-mobile"
+                v-model="mobile"
+                placeholder="请输入手机号码"
+              />
+            </div>
+            <Line></Line>
+            <div class="flex-row flex-center margin-top-49 margin-bottom-18">
+              <input
+                class="input f-18 fc-black"
+                maxlength="6"
+                v-model="verifycode"
+                placeholder="请输入验证码"
+              />
+              <div class="flex-1"></div>
+              <span v-if="verifycodereminder > 0" class="fc-primary fc-gray f-12"
+                >({{ verifycodereminder }}s)</span
+              >
+              <span v-if="verifycodereminder <= 0" class="fc-primary f-12" @click="sendverifycode"
+                >获取验证码</span
+              >
+            </div>
+            <Line></Line>
+            <div class="margin-top-49"></div>
+            <van-button type="primary" block round :color="Config.PrimaryColor" @click="login"
+              >登录</van-button
+            >
+          </div>
           <div class="flex-1"></div>
         </div>
       </div>
-      <div class="flex-row">
-        <div class="flex-1"></div>
-        <div class="section-block">
-          <div>
-            <input
-              class="input wp-100 f-18 fc-black input-mobile"
-              v-model="mobile"
-              placeholder="请输入手机号码"
-            />
-          </div>
-          <Line></Line>
-          <div class="flex-row flex-center margin-top-49 margin-bottom-18">
-            <input
-              class="input f-18 fc-black"
-              maxlength="6"
-              v-model="verifycode"
-              placeholder="请输入验证码"
-            />
-            <div class="flex-1"></div>
-            <span v-if="verifycodereminder > 0" class="fc-primary fc-gray f-12"
-              >({{ verifycodereminder }}s)</span
-            >
-            <span v-if="verifycodereminder <= 0" class="fc-primary f-12" @click="sendverifycode"
-              >获取验证码</span
-            >
-          </div>
-          <Line></Line>
-          <div class="margin-top-49"></div>
-          <van-button type="primary" block round :color="Config.PrimaryColor" @click="login"
-            >登录</van-button
-          >
-        </div>
-        <div class="flex-1"></div>
-      </div>
     </div>
-    <div class="pdd"></div>
     <div class="bottom-block">
       <div class="flex-row flex-center">
         <div class="flex-1"></div>
@@ -179,5 +180,8 @@ const login = () => {
 }
 .pdd{
   height: 200px;
+}
+.pk {
+  min-height: calc( 100vh - 48px );
 }
 </style>

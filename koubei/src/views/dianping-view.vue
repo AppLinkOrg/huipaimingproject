@@ -100,80 +100,81 @@ const toupiao = (uid) => {
         <div class="text-center margin-top-22">投票成功</div>
       </van-dialog>
       <div class="min-wh100 bg-gray">
-        <div class="flex-row">
-          <div class="flex-1"></div>
-          <div class="section-block">
-            <div class="flex-row">
-              <div class="flex-1"></div>
-              <img class="logo" :src="uploadpath + 'resource/' + resource.logo" />
-              <div class="flex-1"></div>
-            </div>
-            <div class="flex-row flex-center">
-              <div
-                class="universitybox bg-white"
-                :class="{ universitybox2: uinfo1!=nunll&&ux == uinfo1.id }"
-                @click="toupiao(uinfo1.id)"
-              >
-                <div class="flex-column flex-center" v-if="uinfo1 != null">
-                  <div class="flex-1">
-                    <img class="uni-logo" :src="uploadpath + 'daxue/' + uinfo1.logo" />
+        <div class="pk">
+          <div class="flex-row ">
+            <div class="flex-1"></div>
+            <div class="section-block">
+              <!-- <div class="flex-row">
+                <div class="flex-1"></div>
+                <img class="logo" :src="uploadpath + 'resource/' + resource.logo" />
+                <div class="flex-1"></div>
+              </div> -->
+              <div class="flex-row flex-center margin-top-49">
+                <div
+                  class="universitybox bg-white"
+                  :class="{ universitybox2: uinfo1!=nunll&&ux == uinfo1.id }"
+                  @click="toupiao(uinfo1.id)"
+                >
+                  <div class="flex-column flex-center" v-if="uinfo1 != null">
+                    <div class="flex-1">
+                      <img class="uni-logo" :src="uploadpath + 'daxue/' + uinfo1.logo" />
+                    </div>
+                    <div class="flex-1">
+                      <div class="f-13 fw-bold fc-black">{{ uinfo1.name }}</div>
+                      <div class="f-13 fw-40 margin-top-22 fc-black">{{ uinfo1.name1 }}</div>
+                    </div>
                   </div>
-                  <div class="flex-1">
-                    <div class="f-13 fw-bold fc-black">{{ uinfo1.name }}</div>
-                    <div class="f-13 fw-40 margin-top-22 fc-black">{{ uinfo1.name1 }}</div>
+                </div>
+                <div class="flex-row">
+                  <div class="flex-1"></div>
+                  <img class="vslogo" :src="uploadpath + 'resource/' + resource.vs" />
+                  <div class="flex-1"></div>
+                </div>
+                <div
+                  class="universitybox bg-white"
+                  :class="{ universitybox2: uinfo2!=nunll&&ux == uinfo2.id }"
+                  @click="toupiao(uinfo2.id)"
+                >
+                  <div class="flex-column flex-center" v-if="uinfo2 != null">
+                    <div class="flex-1">
+                      <img class="uni-logo" :src="uploadpath + 'daxue/' + uinfo2.logo" />
+                    </div>
+                    <div class="flex-1">
+                      <div class="f-13 fw-bold fc-black">{{ uinfo2.name }}</div>
+                      <div class="f-13 fw-40 margin-top-22 fc-black">{{ uinfo2.name1 }}</div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="flex-row">
-                <div class="flex-1"></div>
-                <img class="vslogo" :src="uploadpath + 'resource/' + resource.vs" />
-                <div class="flex-1"></div>
+              <div class="caozuo margin-top-49">
+                <div class="flex-row flex-center">
+                  <div class="shupie"></div>
+                  <div class="margin-left-5  fc-primary f-18 fw-500 ">操作说明</div>
+                </div>
+                <div class="fc-primary f-13 fw-500 margin-top-22">双击校徽即可投票</div>
               </div>
-              <div
-                class="universitybox bg-white"
-                :class="{ universitybox2: uinfo2!=nunll&&ux == uinfo2.id }"
-                @click="toupiao(uinfo2.id)"
-              >
-                <div class="flex-column flex-center" v-if="uinfo2 != null">
-                  <div class="flex-1">
-                    <img class="uni-logo" :src="uploadpath + 'daxue/' + uinfo2.logo" />
-                  </div>
-                  <div class="flex-1">
-                    <div class="f-13 fw-bold fc-black">{{ uinfo2.name }}</div>
-                    <div class="f-13 fw-40 margin-top-22 fc-black">{{ uinfo2.name1 }}</div>
-                  </div>
+              <div class="flex-row flex-center margin-top-49">
+                <div class="flex-1">
+                  <van-button type="primary" block round :color="Config.PrimaryColor" @click="goBack"
+                    >返回</van-button
+                  >
+                </div>
+                <div class="jiange"></div>
+                <div class="flex-1">
+                  <van-button
+                    type="primary"
+                    block
+                    round
+                    :color="Config.WarningColor"
+                    @click="randomChange"
+                    >换一组</van-button
+                  >
                 </div>
               </div>
             </div>
-            <div class="caozuo margin-top-49">
-              <div class="flex-row flex-center">
-                <div class="shupie"></div>
-                <div class="margin-left-5  fc-primary f-18 fw-500 ">操作说明</div>
-              </div>
-              <div class="fc-primary f-13 fw-500 margin-top-22">双击校徽即可投票</div>
-            </div>
-            <div class="flex-row flex-center margin-top-49">
-              <div class="flex-1">
-                <van-button type="primary" block round :color="Config.PrimaryColor" @click="goBack"
-                  >返回</van-button
-                >
-              </div>
-              <div class="jiange"></div>
-              <div class="flex-1">
-                <van-button
-                  type="primary"
-                  block
-                  round
-                  :color="Config.WarningColor"
-                  @click="randomChange"
-                  >换一组</van-button
-                >
-              </div>
-            </div>
+            <div class="flex-1"></div>
           </div>
-          <div class="flex-1"></div>
         </div>
-        <div class="last-space"></div>
         <div class="bottom-block fc-gray">
           <div class="flex-row flex-center">
             <div class="flex-1"></div>
@@ -233,5 +234,9 @@ const toupiao = (uid) => {
   background-color: #048695;
   height: 20px;
   width: 5px;
+}
+
+.pk {
+  min-height: calc( 100vh - 158px );
 }
 </style>
