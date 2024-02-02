@@ -66,6 +66,7 @@ const gotoCategory = () => {
   position: fixed;
   bottom: 170px; /* 距离底部的距离 */
   right: 15px; /* 距离右侧的距离 */
+  z-index: 65535;
 }
 
 .member {
@@ -76,6 +77,7 @@ const gotoCategory = () => {
   position: fixed;
   bottom: 100px; /* 距离底部的距离 */
   right: 15px; /* 距离右侧的距离 */
+  z-index: 65535;
 }
 
 .wh-20 {

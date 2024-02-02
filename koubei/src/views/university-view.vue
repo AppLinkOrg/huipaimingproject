@@ -7,6 +7,8 @@ import Config from '../httphelper/Config'
 import { HttpHelper } from '../httphelper/HttpHelper'
 import { VueEcharts } from 'vue3-echarts'
 import { Utils } from '../utils/Utils'
+import { number } from 'echarts'
+import BackHome from '../components/back-home.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -15,7 +17,11 @@ const resource = ref(null)
 const onNavClickLeft = () => {
   router.back()
 }
-onMounted(() => {})
+var pagesection = ref()
+onMounted(() => {
+  console.log('pagesection', pagesection.value)
+  pagesection.value.style.height = Utils.getAdjustedPageHeight() + 'px'
+})
 HttpHelper.Post('inst/resources').then((data) => {
   resource.value = data
 })
@@ -45,16 +51,18 @@ const maxop = ref(['2021', '01', '01'])
 HttpHelper.Post('daxue/daxueinfo', { id }).then((data) => {
   route.meta.title = data.name
   data.content = Utils.HtmlDecode(data.content)
-  var vmin = new Date(data.minop)
-  var vmax = new Date(data.maxop)
-  data.minop = new Date(data.minop)
-  data.maxop = new Date(data.maxop)
+  if(data.minop!=""&&data.minop!=""){
+    var vmin = new Date(data.minop)
+    var vmax = new Date(data.maxop)
+    data.minop = new Date(data.minop)
+    data.maxop = new Date(data.maxop)
+
+    minop.value = [vmin.getFullYear(), vmin.getMonth() + 1, vmin.getDate()]
+    maxop.value = [vmax.getFullYear(), vmax.getMonth() + 1, vmax.getDate()]
+
+    loaddaxueyear()
+  }
   info.value = data
-
-  minop.value = [vmin.getFullYear(), vmin.getMonth() + 1, vmin.getDate()]
-  maxop.value = [vmax.getFullYear(), vmax.getMonth() + 1, vmax.getDate()]
-
-  loaddaxueyear()
 })
 const loaddaxueyear = () => {
   var startdate = formatDate(minop.value)
@@ -63,16 +71,18 @@ const loaddaxueyear = () => {
     (data) => {
       var years = []
       var ranks = []
+      var max=0;
       for (var i = 0; i < data.length; i++) {
         years.push(data[i].op_time)
-        ranks.push(data[i].rank)
-      }
+        ranks.push(data[i].rank) 
+        if(max<parseInt(data[i].rank)){
+          max=parseInt(data[i].rank);
+        }
+      } 
+      max=(max+10)-(max%10);
       option.value = {
         tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross'
-          }
+          trigger: 'axis'
         },
         xAxis: {
           type: 'category',
@@ -80,8 +90,12 @@ const loaddaxueyear = () => {
         },
         yAxis: {
           axisLabel: {
-            formatter: '{value}'
+            formatter: '{value}',
+            margin: 1,
+            interval: 1
           },
+          min:0,
+          max:max,
           type: 'value'
         },
         series: [
@@ -107,15 +121,19 @@ HttpHelper.Post('daxue/top', { id: id }).then((list) => {
   option2.value = {
     title: {},
     tooltip: {
-      formatter: function(params) {
-        console.log("formatter",params)
+      formatter: function (params) {
+        console.log('formatter', params)
         return (
-          params.data.duibi.duibi.name
-          +"<div style='width:100px;white-space:normal !important;'><p style='width:100px;word-wrap: break-word;overflow-wrap: break-word;'>"+params.data.duibi.duibi.name1+"</p>"
-          +"<p style='width:100px;word-wrap: break-word;overflow-wrap: break-word;'>当前排名："+params.data.duibi.duibi.ranking+"</p>"
+          params.data.duibi.duibi.name +
+          "<div style='width:100px;white-space:normal !important;'><p style='width:100px;word-wrap: break-word;overflow-wrap: break-word;'>" +
+          params.data.duibi.duibi.name1 +
+          '</p>' +
+          "<p style='width:100px;word-wrap: break-word;overflow-wrap: break-word;'>当前排名：" +
+          params.data.duibi.duibi.ranking +
+          '</p>'
           //+"<p style='word-wrap: break-word;overflow-wrap: break-word;'>投票数："+params.data.duibi.ordershop+"</p>"
           //+"<p style='word-wrap: break-word;overflow-wrap: break-word;'>本校："+params.data.duibi.bendian+"</p></div>"
-        );
+        )
       }
     },
     animationDurationUpdate: 1500,
@@ -126,7 +144,10 @@ HttpHelper.Post('daxue/top', { id: id }).then((list) => {
         layout: 'none',
         symbolSize: 52,
         //设置缩放
-        roam: true,
+        roam: {
+                pan: false, // 禁止平移
+                zoom: false // 禁止缩放
+          },
         label: {
           show: true
         },
@@ -175,7 +196,7 @@ const clickoption2 = (aa) => {
     //duibi.value = aa.data.duibi.duibi
     //bendiannum.value = aa.data.duibi.bendian
     //ordershopnum.value = aa.data.duibi.ordershop
-    addsearchresult(aa.data.duibi.duibi.id);
+    addsearchresult(aa.data.duibi.duibi.id)
   }
 }
 const isrank = ref(true)
@@ -256,179 +277,184 @@ const addsearchresult = (duibi_id) => {
 }
 </script>
 <template>
+  
   <div>
     <div class="hw100" v-if="showresultbox" @click="showresultbox = false"></div>
-    <div v-if="resource != null && inst != null && info != null">
-      <van-nav-bar :title="info.name" left-arrow fixed @click-left="onNavClickLeft" />
-      <van-popup v-if="showMinPicker" v-model:show="showMinPicker" position="bottom">
-        <van-date-picker
-          v-model="minop"
-          :min-date="info.minop"
-          :max-date="info.maxop"
-          @confirm="onConfirmMin"
-          @cancel="showMinPicker = false"
-        />
-      </van-popup>
-      <van-popup v-if="showMaxPicker" v-model:show="showMaxPicker" position="bottom">
-        <van-date-picker
-          v-model="maxop"
-          :min-date="info.minop"
-          :max-date="info.maxop"
-          @confirm="onConfirmMax"
-          @cancel="showMaxPicker = false"
-        />
-      </van-popup>
-      <van-overlay :show="showInfo" @click="closeShowInfo()">
-        <div class="wrapper">
-          <div class="infoblock">
-            <div class="f-19 fw-bold">{{ info.name }}</div>
-            <div class="f-19 margin-top-14">{{ info.name1 }}</div>
-            <div class="f-13 margin-top-14" v-if="info.diqu_name!=''">
-              区域/大洲：{{ info.diqu_name }}
-            </div>
-            <div class="f-13 margin-top-14" v-if="info.guojia_name!=''">
-              国家/地区：{{ info.guojia_name }}
-            </div>
-            <div class="f-13 margin-top-14" v-if="info.quyu_name!=''">
-              区域：{{ info.province_name }}
-            </div>
-            <div class="f-13 margin-top-14" v-if="info.province_name!=''">
-              省份：{{ info.province_name }}
-            </div>
-          </div>
-        </div>
-      </van-overlay>
-      <div class="min-wh100 bg-primary">
-        <div class="flex-row pk">
-          <div class="flex-1"></div>
-          <div class="section-block">
-            <div class="white-block section-padding bg-white margin-top-49">
-              <div class="flex-row flex-center">
-                <div class="flex-1">
-                  <div class="fc-black fw-500 f-18">{{ info.name }}</div>
-                  <div class="fc-gray fw-400 f-15 margin-top-11">{{ info.name1 }}</div>
-                </div>
-                <div class="margin-left-15" @click="showInfo = true">
-                  <img class="wh-20" :src="uploadpath + 'resource/' + resource.info" />
-                </div>
+  </div>
+  <div class="flex-column bg-primary" ref="pagesection">
+    <div class="flex-1">
+      <div v-if="resource != null && inst != null && info != null">
+        <van-nav-bar title="汇排名-口碑版" left-arrow fixed @click-left="onNavClickLeft" />
+        <van-popup v-if="showMinPicker" v-model:show="showMinPicker" position="bottom">
+          <van-date-picker
+            v-model="minop"
+            :min-date="info.minop"
+            :max-date="info.maxop"
+            @confirm="onConfirmMin"
+            @cancel="showMinPicker = false"
+          />
+        </van-popup>
+        <van-popup v-if="showMaxPicker" v-model:show="showMaxPicker" position="bottom">
+          <van-date-picker
+            v-model="maxop"
+            :min-date="info.minop"
+            :max-date="info.maxop"
+            @confirm="onConfirmMax"
+            @cancel="showMaxPicker = false"
+          />
+        </van-popup>
+        <van-overlay :show="showInfo" @click="closeShowInfo()">
+          <div class="wrapper">
+            <div class="infoblock">
+              <div class="f-19 fw-bold">{{ info.name }}</div>
+              <div class="f-19 margin-top-14">{{ info.name1 }}</div>
+              <div class="f-13 margin-top-14" v-if="info.diqu_name != ''">
+                区域/大洲：{{ info.diqu_name }}
               </div>
-            </div>
-            <div class="c-block bg-white margin-top-14">
-              <div
-                class="flex-row flex-center tab f-18 fw-bold fc-black"
-                :class="{ tab2: isrank == false }"
-              >
-                <div class="flex-1 text-center" @click="isrank = true">排名</div>
-                <div class="flex-1 text-center" @click="isrank = false">P K</div>
+              <div class="f-13 margin-top-14" v-if="info.guojia_name != ''">
+                国家/地区：{{ info.guojia_name }}
               </div>
-              <div class="section-padding" v-if="isrank == true">
-                <div id="timerank" ref="echart" v-if="option != null">
-                  <div class="text-center flex-row flex-center">
-                    <div class="flex-1"></div>
-                    <div class="margin-right-15 margin-left-15">从</div>
-                    <van-button
-                      type="primary"
-                      size="mini"
-                      :color="Config.PrimaryColor"
-                      @click="showMinPicker = true"
-                      >{{ formatDate(minop) }}</van-button
-                    >
-                    <div class="margin-right-15 margin-left-15">到</div>
-                    <van-button
-                      type="primary"
-                      size="mini"
-                      :color="Config.PrimaryColor"
-                      @click="showMaxPicker = true"
-                      >{{ formatDate(maxop) }}</van-button
-                    >
-                    <div class="flex-1"></div>
-                  </div>
-                  <vue-echarts :option="option" style="height: 450px" ref="chart" />
-                </div>
+              <div class="f-13 margin-top-14" v-if="info.quyu_name != ''">
+                地域：{{ info.quyu_name }}
               </div>
-              <div class="section-padding" v-if="isrank == false">
-                <div id="timerank" ref="echart" v-if="option2 != null">
-                  <vue-echarts :option="option2" style="height: 300px" ref="chart2" @click="clickoption2" />
-                </div>
-                <div id="timerank" ref="echart" v-if="option2 == null">暂无PK数据</div>
-              </div>
-            </div>
-            <div
-              class="white-block section-padding bg-white margin-top-22"
-              v-if="isrank == false && option2 != null"
-            >
-              <div class="flex-row flex-center">
-                <div class="flex-1 f-12 fc-primary  fc-black fw-bold margin-right-15 text-center">{{ info.name }}</div>
-                <div class="vs">VS</div>
-                <div class="flex-1 f-18 fc-primary fw-bold text-right margin-left-15">
-                  <input
-                    class="f-12"
-                    placeholder="请输入学校名字"
-                    v-model="keyword"
-                    @update:model-value="search"
-                  />
-                </div>
-              </div>
-              <div
-                class="searchtipbox"
-                v-if="showresultbox == true && searchlist.length > 0"
-                id="searchid2"
-              >
-                <block v-for="(item, index) in searchlist" :key="index">
-                  <div
-                    v-if="item.name != info.name"
-                    class="padding-s"
-                    @click="addsearchresult(item.id)"
-                  >
-                    {{ item.name }}
-                  </div>
-                </block>
-              </div>
-              <div
-                class="searchtipbox"
-                v-if="showresultbox == true && searchlist.length == 0"
-                id="searchid3"
-              >
-                <div class="padding-s">没有相关数据</div>
-              </div>
-              <div class="flex-row flex-center text-center">
-                <div class="">
-                  <img class="wh-88" :src="uploadpath + 'daxue/' + info.logo" />
-                </div>
-                <div class="flex-1 text-center">
-                  <div>{{ duibi == null ? '' : duibi.benxiao }}</div>
-                  <div class="arrow-container arrow-right">
-                    <div class="arrow-line"></div>
-                    <div class="arrow-head"></div>
-                  </div>
-                  <div>{{ duibi == null ? '' : duibi.duibi }}</div>
-                  <div class="arrow-container arrow-left">
-                    <div class="arrow-head"></div>
-                    <div class="arrow-line arrow-line-left"></div>
-                  </div>
-                </div>
-                <div class="">
-                  <img
-                    v-if="duibi != null"
-                    class="wh-88"
-                    :src="uploadpath + 'daxue/' + duibi.logo"
-                  />
-                </div>
+              <div class="f-13 margin-top-14" v-if="info.province_name != ''">
+                省份：{{ info.province_name }}
               </div>
             </div>
           </div>
-          <div class="flex-1"></div>
-        </div>
-        <div class="bottom-block fc-white bg-primary">
-          <div class="flex-row flex-center">
+        </van-overlay>
+        <div class="min-wh100 bg-primary">
+          <div class="flex-row pk margin-top-22">
             <div class="flex-1"></div>
-            <div class="text-center">
-              <div>
-                <RouterLink class="fc-white" to="/content/aboutus">关于我们</RouterLink> 丨
-                <RouterLink class="fc-white" to="/feedback">意见反馈</RouterLink>
+            <div class="section-block">
+              <div class="white-block section-padding bg-white margin-top-49">
+                <div class="flex-row flex-center">
+                  <div class="flex-1">
+                    <div class="fc-black fw-500 f-18">{{ info.name }}</div>
+                    <div class="fc-gray fw-400 f-15 margin-top-11">{{ info.name1 }}</div>
+                  </div>
+                  <div class="margin-left-15" @click="showInfo = true">
+                    <img class="wh-20" :src="uploadpath + 'resource/' + resource.info" />
+                  </div>
+                </div>
               </div>
-              <div class="margin-top-5">
-                <span class="f-12">{{ inst.banquan2 }}</span>
+              <div class="white-block section-padding bg-white margin-top-22" v-if="info.ranking!='0'">
+                <div class="flex-row flex-center fc-primary fw-400 f-14">
+                  <div class="flex-1 text-center">当前排名：{{ info.ranking }}</div>
+                  <div class="yishu"></div>
+                  <div class="flex-1 text-center">实力值：{{ info.good }}</div>
+                </div>
+              </div>
+              <div class="c-block bg-white margin-top-14">
+                <div
+                  class="flex-row flex-center tab f-18 fw-bold fc-black"
+                  :class="{ tab2: isrank == false }"
+                >
+                  <div class="flex-1 text-center" @click="isrank = true">排名</div>
+                  <div class="flex-1 text-center" @click="isrank = false">P K</div>
+                </div>
+                <div class="section-padding" v-if="isrank == true">
+                  <div id="timerank" ref="echart" v-if="option != null">
+                    <div class="text-center flex-row flex-center">
+                      <div class="flex-1"></div>
+                      <div class="margin-right-15 margin-left-15">从</div>
+                      <van-button
+                        type="primary"
+                        size="mini"
+                        :color="Config.PrimaryColor"
+                        @click="showMinPicker = true"
+                        >{{ formatDate(minop) }}</van-button
+                      >
+                      <div class="margin-right-15 margin-left-15">到</div>
+                      <van-button
+                        type="primary"
+                        size="mini"
+                        :color="Config.PrimaryColor"
+                        @click="showMaxPicker = true"
+                        >{{ formatDate(maxop) }}</van-button
+                      >
+                      <div class="flex-1"></div>
+                    </div>
+                    <vue-echarts :option="option" style="height: 300px" ref="chart" />
+                  </div>
+                  <div class="text-center" v-if="option == null">暂无排名数据</div>
+                </div>
+                <div class="section-padding" v-if="isrank == false">
+                  <div id="timerank" ref="echart" v-if="option2 != null">
+                    <vue-echarts
+                      :option="option2"
+                      style="height: 300px"
+                      ref="chart2"
+                      @click="clickoption2"
+                    />
+                  </div>
+                  <div id="timerank" ref="echart" v-if="option2 == null">暂无PK数据</div>
+                </div>
+              </div>
+              <div
+                class="white-block section-padding bg-white margin-top-22"
+                v-if="isrank == false && option2 != null"
+              >
+                <div class="flex-row flex-center">
+                  <div class="f-12 fc-primary fc-black fw-bold  text-center p100">
+                    {{ info.name }}
+                  </div>
+                  <div class="flex-1  vs">VS</div>
+                  <div class="f-18 fc-primary fw-bold text-right  p100">
+                    <input
+                      class="f-12"
+                      :placeholder="inst.searchTips"
+                      v-model="keyword"
+                      @update:model-value="search"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="searchtipbox"
+                  v-if="showresultbox == true && searchlist.length > 0"
+                  id="searchid2"
+                >
+                  <block v-for="(item, index) in searchlist" :key="index">
+                    <div
+                      v-if="item.name != info.name"
+                      class="padding-s"
+                      @click="addsearchresult(item.id)"
+                    >
+                      {{ item.name }}
+                    </div>
+                  </block>
+                </div>
+                <div
+                  class="searchtipbox"
+                  v-if="showresultbox == true && searchlist.length == 0"
+                  id="searchid3"
+                >
+                  <div class="padding-s">没有相关数据</div>
+                </div>
+                <div class="flex-row flex-center text-center">
+                  <div class=" p100">
+                    <img class="wh-88" :src="uploadpath + 'daxue/' + info.logo" />
+                  </div>
+                  <div class="flex-1 text-center">
+                    <div>{{ duibi == null ? '' : duibi.benxiao }}</div>
+                    <div class="arrow-container arrow-right">
+                      <div class="arrow-line"></div>
+                      <div class="arrow-head"></div>
+                    </div>
+                    <div>{{ duibi == null ? '' : duibi.duibi }}</div>
+                    <div class="arrow-container arrow-left">
+                      <div class="arrow-head"></div>
+                      <div class="arrow-line arrow-line-left"></div>
+                    </div>
+                  </div>
+                  <div class=" p100">
+                    <img
+                      v-if="duibi != null"
+                      class="wh-88"
+                      :src="uploadpath + 'daxue/' + duibi.logo"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
             <div class="flex-1"></div>
@@ -436,6 +462,22 @@ const addsearchresult = (duibi_id) => {
         </div>
       </div>
     </div>
+    <div class="bottom-block fc-white bg-primary"  v-if="inst!=null">
+      <div class="flex-row flex-center margin-top-22">
+        <div class="flex-1"></div>
+        <div class="text-center">
+          <div>
+            <RouterLink class="fc-white" to="/aboutus">关于我们</RouterLink> 丨
+            <RouterLink class="fc-white" to="/feedback">意见反馈</RouterLink>
+          </div>
+          <div class="margin-top-5">
+            <span class="f-12">{{ inst.banquan2 }}</span>
+          </div>
+        </div>
+        <div class="flex-1"></div>
+      </div>
+    </div>
+    <BackHome></BackHome>
   </div>
 </template>
 <style scoped>
@@ -454,6 +496,8 @@ const addsearchresult = (duibi_id) => {
   background-image: url(http://applinkupload.oss-cn-shenzhen.aliyuncs.com/alucard263096/huipaimingkoube/resource/d4789b7f397c42f6b5754f5b4b4095c2_231121033155_302015784.png);
 }
 .vs {
+  width: 80px;
+  text-align: center;
   font-size: 26px;
   font-weight: bold;
   color: #f7af12;
@@ -471,7 +515,7 @@ const addsearchresult = (duibi_id) => {
 
 .arrow-line {
   margin-left: 20px;
-  width: 80px;
+  width: 70px;
   height: 2px; /* 调整横线的高度 */
   background-color: black; /* 横线颜色 */
 }
@@ -529,11 +573,18 @@ input {
   width: 100%;
   text-align: right;
   text-align: right;
+  text-align: center;
 }
 input::placeholder {
-  font-size: 14px; /* 可以根据需要调整字体大小 */
+  font-size: 12px; /* 可以根据需要调整字体大小 */
+  text-align: center;
 }
-.pk {
-  min-height: calc( 100vh - 62px );
+.p100{
+  width: 100px;
+}
+.yishu{
+  height: 10px;
+  width: 1px;
+  background-color: gray;
 }
 </style>

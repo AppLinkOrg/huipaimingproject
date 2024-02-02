@@ -20,7 +20,8 @@ import {
   Form,
   Calendar,
   DatePicker,
-  Popup
+  Popup,
+  Image
 } from 'vant'
 import { VueEcharts } from 'vue3-echarts'
 import 'vant/lib/index.css'
@@ -44,4 +45,5 @@ app.use(Form)
 app.use(Calendar)
 app.use(DatePicker)
 app.use(Popup)
+app.use(Image)
 app.mount('#app')

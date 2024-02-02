@@ -8,6 +8,8 @@ import MemberView from '../views/member-view.vue'
 import DianpingView from '../views/dianping-view.vue'
 import ContentView from '../views/content-view.vue'
 import FeedbackView from '../views/feedback-view.vue'
+import PageView from '../views/page-view.vue'
+import AboutusView from '../views/aboutus-view.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -56,6 +58,16 @@ const router = createRouter({
       path: '/feedback',
       name: 'feedback',
       component: FeedbackView
+    },
+    {
+      path: '/page',
+      name: 'PageView',
+      component: PageView
+    },
+    {
+      path: '/aboutus',
+      name: 'AboutusView',
+      component: AboutusView
     }
   ]
 })

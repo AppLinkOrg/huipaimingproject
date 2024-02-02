@@ -1,4 +1,4 @@
-import Config from "../httphelper/Config"
+import Config from '../httphelper/Config'
 
 export class Utils {
   static ContentToHtml(str) {
@@ -56,8 +56,8 @@ export class Utils {
     return arrstr.join(',')
   }
   static GetPKData(list) {
-    var width=50;
-    var height=50;
+    var width = 50
+    var height = 50
     var ret = []
     ret.push({
       name: '本校',
@@ -69,7 +69,7 @@ export class Utils {
         name: 'TOP 1',
         x: 100,
         y: 0,
-        symbol:"image://"+Config.UploadPath+"daxue/"+list[0].duibi.logo,
+        symbol: 'image://' + Config.UploadPath + 'daxue/' + list[0].duibi.logo,
         symbolSize: [width, height],
         label: {
           show: false
@@ -82,7 +82,7 @@ export class Utils {
         name: 'TOP 2',
         x: 80.9,
         y: 58.78,
-        symbol:"image://"+Config.UploadPath+"daxue/"+list[1].duibi.logo,
+        symbol: 'image://' + Config.UploadPath + 'daxue/' + list[1].duibi.logo,
         symbolSize: [width, height],
         label: {
           show: false
@@ -95,7 +95,7 @@ export class Utils {
         name: 'TOP 3',
         x: 30.9,
         y: 95.11,
-        symbol:"image://"+Config.UploadPath+"daxue/"+list[2].duibi.logo,
+        symbol: 'image://' + Config.UploadPath + 'daxue/' + list[2].duibi.logo,
         symbolSize: [width, height],
         label: {
           show: false
@@ -108,7 +108,7 @@ export class Utils {
         name: 'TOP 4',
         x: -30.9,
         y: 95.11,
-        symbol:"image://"+Config.UploadPath+"daxue/"+list[3].duibi.logo,
+        symbol: 'image://' + Config.UploadPath + 'daxue/' + list[3].duibi.logo,
         symbolSize: [width, height],
         label: {
           show: false
@@ -121,7 +121,7 @@ export class Utils {
         name: 'TOP 5',
         x: -80.9,
         y: 58.78,
-        symbol:"image://"+Config.UploadPath+"daxue/"+list[4].duibi.logo,
+        symbol: 'image://' + Config.UploadPath + 'daxue/' + list[4].duibi.logo,
         symbolSize: [width, height],
         label: {
           show: false
@@ -134,7 +134,7 @@ export class Utils {
         name: 'TOP 6',
         x: -100,
         y: 0,
-        symbol:"image://"+Config.UploadPath+"daxue/"+list[5].duibi.logo,
+        symbol: 'image://' + Config.UploadPath + 'daxue/' + list[5].duibi.logo,
         symbolSize: [width, height],
         label: {
           show: false
@@ -147,7 +147,7 @@ export class Utils {
         name: 'TOP 7',
         x: -80.9,
         y: -58.78,
-        symbol:"image://"+Config.UploadPath+"daxue/"+list[6].duibi.logo,
+        symbol: 'image://' + Config.UploadPath + 'daxue/' + list[6].duibi.logo,
         symbolSize: [width, height],
         label: {
           show: false
@@ -160,7 +160,7 @@ export class Utils {
         name: 'TOP 8',
         x: -30.9,
         y: -95.11,
-        symbol:"image://"+Config.UploadPath+"daxue/"+list[7].duibi.logo,
+        symbol: 'image://' + Config.UploadPath + 'daxue/' + list[7].duibi.logo,
         symbolSize: [width, height],
         label: {
           show: false
@@ -173,7 +173,7 @@ export class Utils {
         name: 'TOP 9',
         x: 30.9,
         y: -95.11,
-        symbol:"image://"+Config.UploadPath+"daxue/"+list[8].duibi.logo,
+        symbol: 'image://' + Config.UploadPath + 'daxue/' + list[8].duibi.logo,
         symbolSize: [width, height],
         label: {
           show: false
@@ -186,7 +186,7 @@ export class Utils {
         name: 'TOP 10',
         x: 80.9,
         y: -58.78,
-        symbol:"image://"+Config.UploadPath+"daxue/"+list[9].duibi.logo,
+        symbol: 'image://' + Config.UploadPath + 'daxue/' + list[9].duibi.logo,
         symbolSize: [width, height],
         label: {
           show: false
@@ -210,7 +210,7 @@ export class Utils {
             width: 4
           },
           label: {
-            offset:[0, 0],
+            offset: [0, 0],
             show: true,
             formatter: list[i].ordershop
           }
@@ -223,7 +223,7 @@ export class Utils {
             color: '#F7AF12'
           },
           label: {
-            offset:[0,0],
+            offset: [0, 0],
             show: true,
             formatter: list[i].bendian
           }
@@ -231,5 +231,17 @@ export class Utils {
       }
     }
     return ret
+  }
+  static getAdjustedPageHeight() {
+    // 获取视口高度
+      var viewportHeight = window.innerHeight;
+
+      // 获取地址栏的高度
+      var addressBarHeight = document.documentElement.clientHeight - viewportHeight;
+
+      // 调整后的页面高度
+      var adjustedPageHeight = viewportHeight + addressBarHeight;
+
+      return adjustedPageHeight;
   }
 }

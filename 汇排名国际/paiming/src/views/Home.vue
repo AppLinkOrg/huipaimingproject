@@ -45,12 +45,42 @@ let onClickButton = (flag = false) => {
     }
   });
 };
+var iclick=false;
+let onClickSearch = () => {
+  if(iclick==true){
+    return
+  }
+  iclick=true;
+  HttpHelper.Post("daxue/daxuelist", {
+    keywords: keyword._value,
+    here: "y",
+  }).then((daxuelist) => {
+    iclick=false;
+    console.log(daxuelist);
+    for(var item of daxuelist){
+      if(item.name==keyword.value||item.name1==keyword.value){
+        tiaozhuan('/paiming', { id: item.id },item.name)
+        return;
+      }
+    }
+    Dialog({
+        title: '提示',
+        message: instinfokoubei.nosearchschool,
+        theme: 'round-button',
+        confirmButtonColor:"#048694 "
+      });
+  });
+};
 var instinfokoubei=null;
 HttpHelper.PostKoubei("inst/info", {}).then((data) => {
   instinfokoubei=data;
 });
 var aaa=false;
-let tiaozhuan = (path, param = {}) => {
+let tiaozhuan = (path, param = {},daxue_name) => {
+  if (path != "/paiming") {
+    router.push({ path, query: param });
+    return;
+  }
   if(aaa==true){
     return
   }
@@ -76,6 +106,7 @@ let tiaozhuan = (path, param = {}) => {
         },
         (ret) => {}
       );
+      HttpHelper.PostKoubei('member/searchrecord', { daxue_name })
     }
     router.push({ path, query: param });
   });
@@ -120,7 +151,6 @@ let switchgn = () =>{
           v-model="keyword"
           class="searchbox"
           show-action
-          left-icon=""
           shape="round"
           :clearable="false"
           @update:model-value="onClickButton"
@@ -130,7 +160,7 @@ let switchgn = () =>{
         >
           <template #action>
             <div class="langzy">
-              <div @click="onClickButton(true)" class="sousuobtn">搜索</div>
+              <div @click="onClickSearch(true)" class="sousuobtn">搜索</div>
               <!-- <div @click="changelang(lang)" class="langzy_h">{{lang=='en'?  "中": "En" }}</div> -->
             </div>
           </template>
@@ -140,7 +170,7 @@ let switchgn = () =>{
             class="h30 c-2"
             v-for="(item, idx) of column"
             :key="idx"
-            @click="tiaozhuan('/paiming', { id: item.id })"
+            @click="tiaozhuan('/paiming', { id: item.id },item.name)"
           >
             {{ lang=='en'?item.name1: (showEn?item.name1:item.name) }}
           </div>
@@ -162,7 +192,7 @@ let switchgn = () =>{
           class="flex-row flex-center"
           v-for="(item, idx) of list"
           :key="idx"
-          @click="tiaozhuan('/paiming', { id: item.name })"
+          @click="tiaozhuan('/paiming', { id: item.name },item.name_name)"
         >
           <div class="f-15 w30" :class="idx < 3 ? 'txt-e5' : 'txt-f1'">
             {{ idx + 1 }}

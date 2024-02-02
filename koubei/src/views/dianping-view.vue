@@ -6,6 +6,7 @@ import Config from '../httphelper/Config'
 import { HttpHelper } from '../httphelper/HttpHelper'
 import { VueEcharts } from 'vue3-echarts'
 import { showDialog } from 'vant'
+import { Utils } from '../utils/Utils'
 
 const route = useRoute()
 const router = useRouter()
@@ -52,14 +53,14 @@ const randomChange = () => {
 }
 randomChange()
 const show = ref(false)
-var firstclick=0;
+var firstclick = 0
 const toupiao = (uid) => {
-  var time=new Date().getTime();
-  console.log("toupiao",time);
-  if(time-firstclick>500){
-    ux.value=uid;
-    firstclick=time;
-    return;
+  var time = new Date().getTime()
+  console.log('toupiao', time)
+  if (time - firstclick > 500) {
+    ux.value = uid
+    firstclick = time
+    return
   }
   if (loading.value == true) {
     return
@@ -74,9 +75,14 @@ const toupiao = (uid) => {
   }).then(() => {
     loading.value = false
     show.value = true
-    ux.value=-1;
+    ux.value = -1
   })
 }
+var pagesection = ref()
+onMounted(() => {
+  console.log('pagesection', pagesection.value)
+  pagesection.value.style.height = Utils.getAdjustedPageHeight() + 'px'
+})
 </script>
 <template>
   <div>
@@ -86,106 +92,116 @@ const toupiao = (uid) => {
         <van-loading size="50" />
       </div>
     </van-overlay>
-    <div v-if="resource != null && inst != null" class="text-center margin-top-49">
-      <van-dialog
-        v-model:show="show"
-        title=""
-        confirm-button-text="更换下一组"
-        theme="round-button"
-        @confirm="randomChange"
-      >
-        <div class="text-center margin-top-49">
-          <img class="success" :src="uploadpath + 'resource/' + resource.success" />
-        </div>
-        <div class="text-center margin-top-22">投票成功</div>
-      </van-dialog>
-      <div class="min-wh100 bg-gray">
-        <div class="pk">
-          <div class="flex-row ">
-            <div class="flex-1"></div>
-            <div class="section-block">
-              <!-- <div class="flex-row">
+  </div>
+
+  <div class="flex-column bg-gray" ref="pagesection">
+    <div class="flex-1">
+      <div v-if="resource != null && inst != null" class="text-center margin-top-49">
+        <van-dialog
+          v-model:show="show"
+          title=""
+          confirm-button-text="更换下一组"
+          theme="round-button"
+          @confirm="randomChange"
+        >
+          <div class="text-center margin-top-49">
+            <img class="success" :src="uploadpath + 'resource/' + resource.success" />
+          </div>
+          <div class="text-center margin-top-22">投票成功</div>
+        </van-dialog>
+        <div class="min-wh100 ">
+          <div class="pk">
+            <div class="flex-row">
+              <div class="flex-1"></div>
+              <div class="section-block">
+                <!-- <div class="flex-row">
                 <div class="flex-1"></div>
                 <img class="logo" :src="uploadpath + 'resource/' + resource.logo" />
                 <div class="flex-1"></div>
               </div> -->
-              <div class="flex-row flex-center margin-top-49">
-                <div
-                  class="universitybox bg-white"
-                  :class="{ universitybox2: uinfo1!=nunll&&ux == uinfo1.id }"
-                  @click="toupiao(uinfo1.id)"
-                >
-                  <div class="flex-column flex-center" v-if="uinfo1 != null">
-                    <div class="flex-1">
-                      <img class="uni-logo" :src="uploadpath + 'daxue/' + uinfo1.logo" />
+                <div class="flex-row flex-center margin-top-49">
+                  <div
+                    class="universitybox bg-white"
+                    :class="{ universitybox2: uinfo1 != null && ux == uinfo1.id }"
+                    @click="toupiao(uinfo1.id)"
+                  >
+                    <div class="flex-column flex-center" v-if="uinfo1 != null">
+                      <div class="flex-1">
+                        <img class="uni-logo" :src="uploadpath + 'daxue/' + uinfo1.logo" />
+                      </div>
+                      <div class="flex-1">
+                        <div class="f-13 fw-bold fc-black">{{ uinfo1.name }}</div>
+                        <div class="f-13 fw-40 margin-top-22 fc-black">{{ uinfo1.name1 }}</div>
+                      </div>
                     </div>
-                    <div class="flex-1">
-                      <div class="f-13 fw-bold fc-black">{{ uinfo1.name }}</div>
-                      <div class="f-13 fw-40 margin-top-22 fc-black">{{ uinfo1.name1 }}</div>
+                  </div>
+                  <div class="flex-row">
+                    <div class="flex-1"></div>
+                    <img class="vslogo" :src="uploadpath + 'resource/' + resource.vs" />
+                    <div class="flex-1"></div>
+                  </div>
+                  <div
+                    class="universitybox bg-white"
+                    :class="{ universitybox2: uinfo2 != null && ux == uinfo2.id }"
+                    @click="toupiao(uinfo2.id)"
+                  >
+                    <div class="flex-column flex-center" v-if="uinfo2 != null">
+                      <div class="flex-1">
+                        <img class="uni-logo" :src="uploadpath + 'daxue/' + uinfo2.logo" />
+                      </div>
+                      <div class="flex-1">
+                        <div class="f-13 fw-bold fc-black">{{ uinfo2.name }}</div>
+                        <div class="f-13 fw-40 margin-top-22 fc-black">{{ uinfo2.name1 }}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="flex-row">
-                  <div class="flex-1"></div>
-                  <img class="vslogo" :src="uploadpath + 'resource/' + resource.vs" />
-                  <div class="flex-1"></div>
+                <div class="caozuo margin-top-49">
+                  <div class="flex-row flex-center">
+                    <div class="shupie"></div>
+                    <div class="margin-left-5 fc-primary f-18 fw-500">操作说明</div>
+                  </div>
+                  <div class="fc-primary f-13 fw-500 margin-top-22">{{inst.doubleclick}}</div>
                 </div>
-                <div
-                  class="universitybox bg-white"
-                  :class="{ universitybox2: uinfo2!=nunll&&ux == uinfo2.id }"
-                  @click="toupiao(uinfo2.id)"
-                >
-                  <div class="flex-column flex-center" v-if="uinfo2 != null">
-                    <div class="flex-1">
-                      <img class="uni-logo" :src="uploadpath + 'daxue/' + uinfo2.logo" />
-                    </div>
-                    <div class="flex-1">
-                      <div class="f-13 fw-bold fc-black">{{ uinfo2.name }}</div>
-                      <div class="f-13 fw-40 margin-top-22 fc-black">{{ uinfo2.name1 }}</div>
-                    </div>
+                <div class="flex-row flex-center margin-top-49">
+                  <div class="flex-1">
+                    <van-button
+                      type="primary"
+                      block
+                      round
+                      :color="Config.PrimaryColor"
+                      @click="goBack"
+                      >返回</van-button
+                    >
+                  </div>
+                  <div class="jiange"></div>
+                  <div class="flex-1">
+                    <van-button
+                      type="primary"
+                      block
+                      round
+                      :color="Config.WarningColor"
+                      @click="randomChange"
+                      >换一组</van-button
+                    >
                   </div>
                 </div>
               </div>
-              <div class="caozuo margin-top-49">
-                <div class="flex-row flex-center">
-                  <div class="shupie"></div>
-                  <div class="margin-left-5  fc-primary f-18 fw-500 ">操作说明</div>
-                </div>
-                <div class="fc-primary f-13 fw-500 margin-top-22">双击校徽即可投票</div>
-              </div>
-              <div class="flex-row flex-center margin-top-49">
-                <div class="flex-1">
-                  <van-button type="primary" block round :color="Config.PrimaryColor" @click="goBack"
-                    >返回</van-button
-                  >
-                </div>
-                <div class="jiange"></div>
-                <div class="flex-1">
-                  <van-button
-                    type="primary"
-                    block
-                    round
-                    :color="Config.WarningColor"
-                    @click="randomChange"
-                    >换一组</van-button
-                  >
-                </div>
-              </div>
+              <div class="flex-1"></div>
             </div>
-            <div class="flex-1"></div>
           </div>
         </div>
-        <div class="bottom-block fc-gray">
-          <div class="flex-row flex-center">
-            <div class="flex-1"></div>
-            <div class="text-center">
-              <div class="margin-top-5">
-                <span class="f-12">{{ inst.banquan2 }}</span>
-              </div>
-            </div>
-            <div class="flex-1"></div>
+      </div>
+    </div>
+    <div class="bottom-block fc-gray" >
+      <div class="flex-row flex-center"  v-if="inst!=null">
+        <div class="flex-1"></div>
+        <div class="text-center">
+          <div class="margin-top-5">
+            <span class="f-12">{{ inst.banquan2 }}</span>
           </div>
         </div>
+        <div class="flex-1"></div>
       </div>
     </div>
   </div>
@@ -224,19 +240,15 @@ const toupiao = (uid) => {
 .success {
   width: 200px;
 }
-.caozuo{
+.caozuo {
   padding: 20px;
   text-align: left;
   background: #fff;
   border-radius: 15px;
 }
-.shupie{
+.shupie {
   background-color: #048695;
   height: 20px;
   width: 5px;
-}
-
-.pk {
-  min-height: calc( 100vh - 158px );
 }
 </style>

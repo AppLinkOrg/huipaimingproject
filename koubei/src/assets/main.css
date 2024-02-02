@@ -157,7 +157,7 @@
   background-color: #048695;
 }
 .bottom-block {
-  margin-bottom: 14px;
+  padding-bottom: 14px;
 }
 .wh-16 {
   width: 16px;
@@ -193,6 +193,8 @@
   text-align: right;
 }
 .min-wh100 {
-  min-height: 100vh;
 }
 
+.fh100 {
+  height: 100vh;
+}

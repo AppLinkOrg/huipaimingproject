@@ -1056,4 +1056,9 @@ input {
   bottom: 80px;
   z-index: 100;
 }
+
+
+.van-search__field .van-field__left-icon .van-icon-search{
+  color:#048693 !important;
+}
 </style>
