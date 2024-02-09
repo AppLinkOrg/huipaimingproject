@@ -99,8 +99,7 @@ const search = () => {
   }
   insearch = true
   HttpHelper.Post('daxue/daxuelist', {
-    keywords: keyword.value,
-    limit: '0,10'
+    keywords: keyword.value
   }).then((daxuelist) => {
     insearch = false
     searchlist.value = daxuelist
