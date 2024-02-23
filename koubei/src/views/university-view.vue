@@ -554,6 +554,7 @@ const addsearchresult = (duibi_id) => {
   z-index: 2;
   padding-bottom: 10px;
   z-index: 101;
+  max-height: 110px;
 }
 .padding-s {
   color: black;

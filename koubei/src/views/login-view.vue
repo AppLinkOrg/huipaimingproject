@@ -70,7 +70,7 @@ const handleFailed = () => {
 }
 const login = () => {
   if (checked.value == false) {
-    showToast('请勾选统一用户协议和隐私政策')
+    showToast('请勾选同意用户协议和隐私政策')
     return
   }
   loading.value = true
